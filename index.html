@@ -36,7 +36,7 @@
         <a href="#calculadora" class="hover:text-emerald-700">Estimativa</a>
         <a href="#servicos" class="hover:text-emerald-700">Serviços</a>
         <a href="#faq" class="hover:text-emerald-700">Dúvidas</a>
-        <!-- TROCA: botão agora é "Diagnóstico" e vai para diagnostico.html -->
+        <!-- Botão de Diagnóstico -->
         <a href="diagnostico.html" class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
           Diagnóstico
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -60,9 +60,9 @@
           <strong>Crescimento e inovação</strong> com automações, integrações e <strong>produtos web</strong> que geram resultado.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <!-- TROCA: "Começar agora" leva ao diagnóstico -->
+          <!-- Botão leva ao diagnóstico -->
           <a href="diagnostico.html" class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
-            Começar agora
+            Diagnóstico
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
           <a href="#beneficios" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-5 py-3 hover:border-emerald-700 hover:text-emerald-700 transition">
@@ -303,8 +303,6 @@
           <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Diagnóstico</button>
         </form>
-        <p id="leadOk" class="hidden text-sm text-emerald-700 mt-3">Recebemos seus dados. Redirecionando… ✅</p>
-        <p id="leadErr" class="hidden text-sm text-red-700 mt-3">Não foi possível enviar agora. Tentamos salvar localmente e baixar um CSV.</p>
       </div>
     </div>
   </section>
@@ -356,7 +354,6 @@
 
     // Calculadora
     const BRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
-    const $ = id => document.getElementById(id);
     function calc(){
       const func = +document.getElementById('inp-func').value||0;
       const sal  = +document.getElementById('inp-sal').value||0;
@@ -388,90 +385,33 @@
     });
     window.addEventListener('DOMContentLoaded', calc);
 
-    // ========= LEAD: salvar e redirecionar =========
-    // Coloque aqui seu endpoint Formspree. Se deixar vazio, usamos fallback local.
-    const FORMSPREE_URL = 'YOUR_FORMSPREE_ENDPOINT'; // ex: 'https://formspree.io/f/abcd1234'
-
-    const leadForm = document.getElementById('leadForm');
-    const leadOk   = document.getElementById('leadOk');
-    const leadErr  = document.getElementById('leadErr');
-
-    function downloadCSV(rowObj){
-      const headers = ['timestamp','nome','email','origem'];
-      const values = [
-        new Date().toISOString(),
-        rowObj.nome || '',
-        rowObj.email || '',
-        'index'
-      ];
-      const csv = headers.join(',') + '\n' + values.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href = url;
-      a.download = 'lead-edifiq.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    function saveLocal(rowObj){
+    // ========= LEAD: salvar no localStorage e redirecionar =========
+    const LEADS_KEY = 'edifiq_leads';
+    function salvarLead(payload){
       try{
-        const key = 'edifiq_leads';
-        const prev = JSON.parse(localStorage.getItem(key) || '[]');
-        prev.push({ ts: Date.now(), ...rowObj });
-        localStorage.setItem(key, JSON.stringify(prev));
+        const arr = JSON.parse(localStorage.getItem(LEADS_KEY) || '[]');
+        arr.push({ ...payload, ts: Date.now(), origem: 'index' });
+        localStorage.setItem(LEADS_KEY, JSON.stringify(arr));
       }catch(_){}
     }
 
-    async function sendLeadOnline(data){
-      if(!FORMSPREE_URL || !/^https?:\/\//.test(FORMSPREE_URL)) {
-        return { ok:false, offline:true };
-      }
-      const formData = new FormData();
-      formData.append('_subject', 'Novo lead (index)');
-      formData.append('_captcha', 'false');
-      formData.append('nome', data.nome);
-      formData.append('email', data.email);
-      formData.append('origem', 'index');
-
-      const r = await fetch(FORMSPREE_URL, { method:'POST', body: formData, headers:{ 'Accept':'application/json' } });
-      return { ok: r.ok };
-    }
-
-    leadForm?.addEventListener('submit', async (e)=>{
+    const leadForm = document.getElementById('leadForm');
+    leadForm?.addEventListener('submit', (e)=>{
       e.preventDefault();
       const btn = leadForm.querySelector('button');
       btn.disabled = true; btn.textContent = 'Enviando...';
-      leadOk.classList.add('hidden');
-      leadErr.classList.add('hidden');
 
       const payload = {
         nome:  leadForm.nome.value.trim(),
         email: leadForm.email.value.trim()
       };
-
-      try{
-        const res = await sendLeadOnline(payload);
-        if(res.ok){
-          leadOk.classList.remove('hidden');
-          window.location.href = 'diagnostico.html';
-        }else{
-          // fallback: salva local + baixa CSV e redireciona
-          saveLocal(payload);
-          downloadCSV(payload);
-          leadErr.classList.remove('hidden');
-          window.location.href = 'diagnostico.html';
-        }
-      }catch(_e){
-        saveLocal(payload);
-        downloadCSV(payload);
-        leadErr.classList.remove('hidden');
-        window.location.href = 'diagnostico.html';
-      }finally{
+      if (!payload.nome || !payload.email){
         btn.disabled = false; btn.textContent = 'Diagnóstico';
+        return;
       }
+
+      salvarLead(payload);
+      window.location.href = 'diagnostico.html';
     });
   </script>
 </body>
