@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Leads — EDIFIQ</title>
+  <link rel="icon" href="./edifiq.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-2xl font-extrabold">Leads (armazenados no navegador)</h1>
+    <p class="text-sm text-slate-600 mt-1">Chave: <code class="bg-slate-200 px-1 rounded">edifiq_leads</code></p>
+
+    <div class="mt-4 flex gap-3">
+      <button id="btnExport" class="rounded-lg bg-black text-white px-4 py-2 hover:bg-red-700">Exportar CSV</button>
+      <button id="btnClear" class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-200">Apagar todos</button>
+      <a href="index.html" class="ml-auto underline">← Voltar ao site</a>
+    </div>
+
+    <div class="mt-6 overflow-auto rounded-xl border border-slate-200 bg-white">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold">Quando</th>
+            <th class="px-3 py-2 text-left font-semibold">Nome</th>
+            <th class="px-3 py-2 text-left font-semibold">Email</th>
+            <th class="px-3 py-2 text-left font-semibold">Origem</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <p id="empty" class="p-4 text-slate-500 hidden">Nenhum lead salvo localmente.</p>
+    </div>
+  </div>
+
+  <script>
+    const KEY = 'edifiq_leads';
+    const tbody = document.getElementById('tbody');
+    const empty = document.getElementById('empty');
+
+    function loadLeads(){
+      const arr = JSON.parse(localStorage.getItem(KEY) || '[]');
+      tbody.innerHTML = '';
+      if(arr.length === 0){
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+      arr.sort((a,b)=> (b.ts||0)-(a.ts||0));
+      for(const row of arr){
+        const tr = document.createElement('tr');
+        tr.className = 'border-t border-slate-200';
+        const when = row.ts ? new Date(row.ts).toLocaleString() : '';
+        tr.innerHTML = `
+          <td class="px-3 py-2">${when}</td>
+          <td class="px-3 py-2">${row.nome||''}</td>
+          <td class="px-3 py-2">${row.email||''}</td>
+          <td class="px-3 py-2">${row.origem||'index'}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    function exportCSV(){
+      const arr = JSON.parse(localStorage.getItem(KEY) || '[]');
+      if(arr.length === 0){ alert('Sem leads para exportar.'); return; }
+      const headers = ['timestamp','nome','email','origem'];
+      const rows = arr.map(r=>[
+        r.ts ? new Date(r.ts).toISOString() : '',
+        r.nome||'',
+        r.email||'',
+        r.origem||'index'
+      ]);
+      const csv = [headers.join(','), ...rows.map(cols=> cols.map(v=> `"${String(v).replace(/"/g,'""')}"`).join(','))].join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url  = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'leads-edifiq-export.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAll(){
+      if(confirm('Tem certeza que deseja apagar todos os leads salvos localmente?')){
+        localStorage.removeItem(KEY);
+        loadLeads();
+      }
+    }
+
+    document.getElementById('btnExport').addEventListener('click', exportCSV);
+    document.getElementById('btnClear').addEventListener('click', clearAll);
+    loadLeads();
+  </script>
+</body>
+</html>
