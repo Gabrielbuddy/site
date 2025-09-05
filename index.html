@@ -15,8 +15,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{
-      --red:   200,16,46;
-      --green: 0,122,61;
+      --red:   200,16,46;   /* vermelho EDIFIQ */
+      --green: 0,122,61;    /* verde EDIFIQ    */
     }
     .soft-shadow{box-shadow:0 12px 30px rgba(0,0,0,.08)}
     .bar-split{background:linear-gradient(to right, rgb(var(--red)) 0 50%, rgb(var(--green)) 50% 100%)}
@@ -125,22 +125,35 @@
   <section id="etapas" class="py-20 bg-white">
     <div class="max-w-6xl mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-center">Como funciona</h2>
-      <div class="mt-8 grid md:grid-cols-4 gap-6">
+
+      <!-- 1 coluna no mobile, 4 no desktop -->
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
         <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
           <span class="text-sm md:text-base font-bold text-emerald-700 block">1. Diagnóstico</span>
-          <p class="mt-3 text-base text-slate-700"><strong> <strong>Sabemos</strong> o que está acontecendo na sua empresa e como podemos ajudar.</p>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Sabemos</strong> o que está acontecendo na sua empresa e como podemos ajudar.
+          </p>
         </div>
+
         <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
           <span class="text-sm md:text-base font-bold text-emerald-700 block">2. Plano</span>
-          <p class="mt-3 text-base text-slate-700"><strong>Traçamos</strong> um plano para otimizar seus resultados.</p>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Traçamos</strong> um plano para otimizar seus resultados.
+          </p>
         </div>
+
         <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
           <span class="text-sm md:text-base font-bold text-emerald-700 block">3. Execução</span>
-          <p class="mt-3 text-base text-slate-700"><strong>Fazemos</strong> as alterações necessárias — seja web ou automações.</p>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Fazemos</strong> as alterações necessárias — seja web ou automações.
+          </p>
         </div>
+
         <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
           <span class="text-sm md:text-base font-bold text-emerald-700 block">4. Otimização</span>
-          <p class="mt-3 text-base text-slate-700"><strong>Estamos</strong> sempre disponíveis para melhorar e aprimorar seu negócio.</p>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Estamos</strong> sempre disponíveis para melhorar e aprimorar seu negócio.
+          </p>
         </div>
       </div>
     </div>
@@ -359,12 +372,12 @@
         payback = econMes > 0 ? (custo / econMes).toFixed(1) + ' meses' : '—';
       }
 
-      $('out-hora').textContent = BRL.format(Math.max(0, custoHora));
-      $('out-horas-mes').textContent = Math.max(0, Math.round(horasPoupadasMes)) + ' h';
-      $('out-econ-mes').textContent = BRL.format(Math.max(0, econMes));
-      $('out-econ-ano').textContent = BRL.format(Math.max(0, econAno));
-      $('out-roi').textContent = (isFinite(roi) ? Math.round(roi) : 0) + '%';
-      $('out-payback').textContent = 'Payback: ' + payback;
+      document.getElementById('out-hora').textContent      = BRL.format(Math.max(0, custoHora));
+      document.getElementById('out-horas-mes').textContent = Math.max(0, Math.round(horasPoupadasMes)) + ' h';
+      document.getElementById('out-econ-mes').textContent  = BRL.format(Math.max(0, econMes));
+      document.getElementById('out-econ-ano').textContent  = BRL.format(Math.max(0, econAno));
+      document.getElementById('out-roi').textContent       = (isFinite(roi) ? Math.round(roi) : 0) + '%';
+      document.getElementById('out-payback').textContent   = 'Payback: ' + payback;
     }
     ['inp-func','inp-sal','inp-horas','inp-perc','inp-custo'].forEach(id=>{
       document.addEventListener('input', e=>{ if(e.target && e.target.id===id) calc(); });
@@ -373,4 +386,3 @@
   </script>
 </body>
 </html>
-
