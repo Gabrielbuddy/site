@@ -101,7 +101,7 @@
           <!-- step 4: ENVIO -->
           <div data-step="4" class="step-pane hidden">
             <h2 class="font-bold text-lg">4) Envio</h2>
-            <p class="mt-2 text-slate-600 text-sm">Revise as informações, escolha a urgência e envie pelo WhatsApp.</p>
+            <p class="mt-2 text-slate-600 text-sm">Revise as informações, escolha a urgência e clique em “Enviar dados”.</p>
 
             <!-- urgência -->
             <div class="mt-4">
@@ -123,13 +123,12 @@
         <div class="flex items-center justify-between">
           <button type="button" id="btnPrev" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Voltar</button>
           <div class="flex gap-2">
-            <!-- Apenas WhatsApp na etapa final (mas antes envia pro Formspree) -->
-            <button type="button" id="btnWhats" class="hidden px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
+            <button type="submit" id="btnSubmit" class="hidden px-5 py-2 rounded-xl bg-black text-white hover:bg-red-700">Enviar dados</button>
             <button type="button" id="btnNext" class="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700">Continuar</button>
           </div>
         </div>
 
-        <p id="ok" class="hidden text-sm text-emerald-700">Dados enviados. Abrimos seu WhatsApp com o resumo. ✅</p>
+        <p id="ok" class="hidden text-sm text-emerald-700">Dados enviados com sucesso. Entraremos em contato em breve. ✅</p>
         <p id="erro" class="hidden text-sm text-red-700">Não foi possível enviar online agora. Salvamos localmente e baixamos um CSV com o diagnóstico.</p>
       </form>
     </div>
@@ -162,9 +161,10 @@
       panes[step-1].classList.remove('hidden');
       marks.forEach((m,i)=>m.classList.toggle('is-active', i===step-1));
       btnPrev.disabled = step===1;
+
       const last = step===total;
       btnNext.classList.toggle('hidden', last);
-      btnWhats.classList.toggle('hidden', !last);
+      btnSubmit.classList.toggle('hidden', !last);
       if(last) updatePreview();
     }
     render();
@@ -264,7 +264,6 @@
         const fd = new FormData();
         fd.append('_subject','Novo diagnóstico');
         fd.append('_captcha','false');
-        // campos individuais
         fd.append('empresa',  data.empresa);
         fd.append('site',     data.site);
         fd.append('tamanho',  data.tamanho);
@@ -276,7 +275,6 @@
         fd.append('desafios', data.desafios);
         fd.append('urgencia', data.urgencia);
         fd.append('origem',   data.origem);
-        // resumo completo pra facilitar a leitura no e-mail
         fd.append('resumo',   data.resumo);
 
         const r = await fetch(FORMSPREE_URL, { method:'POST', body: fd, headers:{ 'Accept':'application/json' } });
@@ -284,29 +282,34 @@
       }catch(_){ return false; }
     }
 
-    // ========= WHATSAPP (envia primeiro ao Formspree) =========
-    btnWhats.onclick = async ()=>{
-      // valida tudo
+    // ========= SUBMIT =========
+    diagForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      // garante que tudo está válido
       if(!diagForm.reportValidity()) return;
 
       const payload = collect(diagForm);
-      // tenta enviar online
+
+      // desabilita botões enquanto envia
+      btnSubmit.disabled = true; btnSubmit.textContent = 'Enviando...';
+      btnNext.disabled = true; btnPrev.disabled = true;
+      document.getElementById('ok').classList.add('hidden');
+      document.getElementById('erro').classList.add('hidden');
+
       const ok = await sendOnline(payload);
       if(!ok){
-        // fallback local
         saveLocal(payload);
         downloadCSV(payload);
         document.getElementById('erro').classList.remove('hidden');
       }else{
         document.getElementById('ok').classList.remove('hidden');
+        // opcional: resetar formulário
+        // diagForm.reset(); step=1; render();
       }
 
-      // abrir WhatsApp com o resumo
-      const txt = encodeURIComponent(payload.resumo);
-      const phone = '5553999038427'; // seu número em formato internacional sem +
-      const url = `https://wa.me/${phone}?text=${txt}`;
-      window.open(url, '_blank');
-    };
+      btnSubmit.disabled = false; btnSubmit.textContent = 'Enviar dados';
+      btnNext.disabled = false; btnPrev.disabled = false;
+    });
   </script>
 </body>
 </html>
