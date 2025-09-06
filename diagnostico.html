@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EDIFIQ — Diagnóstico</title>
-  <meta name="description" content="Diagnóstico: entendemos seu negócio e mapeamos oportunidades de automação, integrações e produtos web." />
+  <meta name="description" content="Diagnóstico EDIFIQ: entendemos seu negócio e mapeamos oportunidades de automação, integrações e produtos web." />
   <link rel="icon" type="image/png" href="./edifiq.png" />
   <link rel="icon" type="image/jpeg" href="./edifiq.jpg" />
   <link rel="apple-touch-icon" href="./edifiq.png" />
@@ -35,13 +35,13 @@
     <div class="max-w-6xl mx-auto px-4 py-10 md:py-14 grid lg:grid-cols-2 gap-10 items-start">
       <div>
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
-          Diagnóstico <span></span>
+          Diagnóstico <span class="text-emerald-700">EDIFIQ</span>
         </h1>
         <p class="mt-4 text-slate-600 text-lg">
           Entendemos seu cenário atual, objetivos e desafios. Com base nisso, entregamos um plano com ações priorizadas de automações, integrações e produtos web.
         </p>
         <ul class="mt-6 space-y-2 text-slate-700">
-          <li>• Leva 5 minutos</li>
+          <li>• Leva ~5 minutos</li>
           <li>• Sem compromisso</li>
           <li>• Retornamos com oportunidades e próximos passos</li>
         </ul>
@@ -54,7 +54,7 @@
           <div id="p1" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Empresa</div>
           <div id="p2" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Objetivos</div>
           <div id="p3" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Canais & Desafios</div>
-          <div id="p4" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Contato</div>
+          <div id="p4" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Envio</div>
         </div>
 
         <!-- CARD -->
@@ -98,30 +98,33 @@
             </div>
           </div>
 
-          <!-- step 4 -->
+          <!-- step 4 (ENVIO) -->
           <div data-step="4" class="step-pane hidden">
-            <h2 class="font-bold text-lg">4) Contato</h2>
-            <div class="mt-4 grid md:grid-cols-2 gap-4">
-              <input name="nome" required placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300">
-              <input name="email" required type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300">
-              <input name="telefone" required placeholder="WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300">
-              <select name="urgencia" required class="px-4 py-3 rounded-xl border border-slate-300">
-                <option value="" disabled selected>Urgência</option>
+            <h2 class="font-bold text-lg">4) Envio</h2>
+            <p class="mt-2 text-slate-600 text-sm">
+              Revise as informações e selecione a urgência antes de enviar para a EDIFIQ.
+            </p>
+
+            <!-- urgência -->
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-slate-700 mb-1">Urgência</label>
+              <select name="urgencia" required class="w-full px-4 py-3 rounded-xl border border-slate-300">
+                <option value="" disabled selected>Selecione a urgência</option>
                 <option>Alta</option><option>Média</option><option>Baixa</option>
               </select>
             </div>
-            <label class="mt-4 flex items-center gap-2 text-sm text-slate-600">
-              <input id="aceite" type="checkbox" required class="w-4 h-4 border-slate-300 rounded"> 
-              Concordo em ser contatado pela EDIFIQ.
-            </label>
+
+            <!-- prévia -->
+            <pre id="preview" class="mt-4 w-full whitespace-pre-wrap rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm"></pre>
           </div>
         </div>
 
         <div class="flex items-center justify-between">
           <button type="button" id="btnPrev" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Voltar</button>
           <div class="flex gap-2">
-            <button type="button" id="btnWhats" class="hidden md:inline-flex px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
-            <button type="submit" id="btnSubmit" class="px-5 py-2 rounded-xl bg-black text-white hover:bg-red-700">Enviar por e-mail</button>
+            <!-- O WhatsApp e o Enviar por e-mail só aparecem na última etapa -->
+            <button type="button" id="btnWhats" class="hidden px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
+            <button type="submit" id="btnSubmit" class="hidden px-5 py-2 rounded-xl bg-black text-white hover:bg-red-700">Enviar por e-mail</button>
             <button type="button" id="btnNext" class="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700">Continuar</button>
           </div>
         </div>
@@ -153,26 +156,6 @@
     const panes = [...document.querySelectorAll('.step-pane')];
     const marks = [p1,p2,p3,p4];
 
-    function render(){
-      panes.forEach(p=>p.classList.add('hidden'));
-      panes[step-1].classList.remove('hidden');
-      marks.forEach((m,i)=>m.classList.toggle('is-active', i===step-1));
-      document.getElementById('btnPrev').disabled = step===1;
-      document.getElementById('btnNext').classList.toggle('hidden', step===total);
-      document.getElementById('btnSubmit').classList.toggle('hidden', step!==total);
-      document.getElementById('btnWhats').classList.toggle('hidden', step!==total);
-    }
-    render();
-
-    btnPrev.onclick = ()=>{ if(step>1){ step--; render(); } };
-    btnNext.onclick = ()=>{
-      // antes de avançar, valida os campos visíveis
-      const pane = panes[step-1];
-      const invalid = pane.querySelector(':invalid');
-      if(invalid){ invalid.reportValidity(); return; }
-      if(step<total){ step++; render(); }
-    };
-
     function fmt(form){
       const data = Object.fromEntries(new FormData(form).entries());
       const linhas = [
@@ -188,17 +171,53 @@
         `Canais: ${data.canais}`,
         `Desafios: ${data.desafios}`,
         ``,
-        `Contato: ${data.nome} | ${data.email} | ${data.telefone}`,
-        `Urgência: ${data.urgencia}`,
+        `Urgência: ${data.urgencia || '(não selecionada)'}`
       ];
       return linhas.join('\n');
     }
 
-    // WhatsApp
-    btnWhats.onclick = ()=>{
+    function updatePreview(){
+      const prev = document.getElementById('preview');
+      if(prev) prev.textContent = fmt(diagForm);
+    }
+
+    function render(){
+      panes.forEach(p=>p.classList.add('hidden'));
+      panes[step-1].classList.remove('hidden');
+      marks.forEach((m,i)=>m.classList.toggle('is-active', i===step-1));
+
+      document.getElementById('btnPrev').disabled = step===1;
+
+      // Mostrar/esconder botões conforme etapa
+      const last = (step===total);
+      document.getElementById('btnNext').classList.toggle('hidden', last);
+      document.getElementById('btnSubmit').classList.toggle('hidden', !last);
+      document.getElementById('btnWhats').classList.toggle('hidden', !last);
+
+      // Atualiza a prévia quando chega na etapa final
+      if(last) updatePreview();
+    }
+    render();
+
+    btnPrev.onclick = ()=>{ if(step>1){ step--; render(); } };
+
+    btnNext.onclick = ()=>{
+      // valida os campos visíveis antes de avançar
       const pane = panes[step-1];
       const invalid = pane.querySelector(':invalid');
       if(invalid){ invalid.reportValidity(); return; }
+      if(step<total){ step++; render(); }
+    };
+
+    // Atualiza prévia sempre que qualquer campo mudar
+    diagForm.addEventListener('input', ()=>{
+      if(step===total) updatePreview();
+    });
+
+    // WhatsApp (apenas na última etapa)
+    btnWhats.onclick = ()=>{
+      // valida tudo (inclui urgência)
+      if(!diagForm.reportValidity()) return;
 
       const txt = encodeURIComponent(fmt(diagForm));
       const phone = '5553999038427'; // +55 53 99903-8427
@@ -206,11 +225,10 @@
       window.open(url, '_blank');
     };
 
-    // mailto "enviar por e-mail"
+    // Enviar por e-mail (mailto)
     diagForm.addEventListener('submit', (e)=>{
       e.preventDefault();
-
-      // valida tudo
+      // valida tudo (inclui urgência)
       if(!diagForm.reportValidity()) return;
 
       const assunto = encodeURIComponent('Diagnóstico EDIFIQ');
