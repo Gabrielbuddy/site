@@ -21,6 +21,7 @@
     .soft-shadow{box-shadow:0 12px 30px rgba(0,0,0,.08)}
     .bar-split{background:linear-gradient(to right, rgb(var(--red)) 0 50%, rgb(var(--green)) 50% 100%)}
     .badge-dot{width:8px;height:8px;border-radius:999px;background:rgb(var(--green))}
+    .modal-backdrop{background:rgba(15,23,42,.6)}
   </style>
 </head>
 <body class="antialiased text-slate-900 bg-white">
@@ -36,8 +37,8 @@
         <a href="#calculadora" class="hover:text-emerald-700">Estimativa</a>
         <a href="#servicos" class="hover:text-emerald-700">Serviços</a>
         <a href="#faq" class="hover:text-emerald-700">Dúvidas</a>
-        <!-- TROCA: botão agora é "Diagnóstico" e vai para diagnostico.html -->
-        <a href="diagnostico.html" class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
+        <!-- Botão Diagnóstico: AGORA ABRE POPUP -->
+        <a href="diagnostico.html" data-dx class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
           Diagnóstico
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
@@ -60,8 +61,8 @@
           <strong>Crescimento e inovação</strong> com automações, integrações e <strong>produtos web</strong> que geram resultado.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <!-- TROCA: "Começar agora" leva ao diagnóstico -->
-          <a href="diagnostico.html" class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
+          <!-- “Começar agora”: AGORA ABRE POPUP -->
+          <a href="diagnostico.html" data-dx class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
             Começar agora
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
@@ -297,14 +298,15 @@
       <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 md:p-12 text-center soft-shadow">
         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Vamos acelerar seu projeto?</h2>
         <p class="mt-3 text-slate-600">Solicite um diagnóstico gratuito e receba um plano inicial.</p>
-        <!-- FORM: salva lead e redireciona para diagnostico.html -->
-        <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto">
+        <!-- FORM: agora com WHATSAPP também -->
+        <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto" novalidate>
           <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
-          <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Diagnóstico</button>
+          <input required name="whatsapp" type="tel" inputmode="tel" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition md:col-span-3">Diagnóstico</button>
         </form>
         <p id="leadOk" class="hidden text-sm text-emerald-700 mt-3">Recebemos seus dados. Redirecionando… ✅</p>
-        <p id="leadErr" class="hidden text-sm text-red-700 mt-3">Não foi possível enviar agora. Tentamos salvar localmente e baixar um CSV.</p>
+        <p id="leadErr" class="hidden text-sm text-red-700 mt-3">Não foi possível enviar agora. Salvamos localmente e baixamos um CSV.</p>
       </div>
     </div>
   </section>
@@ -329,6 +331,23 @@
     </div>
     <div class="w-full h-2 mt-6 bar-split"></div>
   </footer>
+
+  <!-- MODAL (popup para links de diagnóstico no nav/hero) -->
+  <div id="dxModal" class="fixed inset-0 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 modal-backdrop"></div>
+    <div class="relative w-full max-w-md rounded-2xl bg-white p-6 soft-shadow border border-slate-200">
+      <button id="dxClose" class="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label="Fechar">✕</button>
+      <h3 class="text-xl font-bold">Antes do diagnóstico</h3>
+      <p class="text-sm text-slate-600 mt-1">Preencha seus dados para continuarmos:</p>
+      <form id="dxForm" class="mt-4 grid gap-3" novalidate>
+        <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <input required name="whatsapp" type="tel" inputmode="tel" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <button class="mt-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Continuar para diagnóstico</button>
+      </form>
+      <p id="dxOk" class="hidden mt-3 text-sm text-emerald-700">Dados salvos. Redirecionando…</p>
+    </div>
+  </div>
 
   <!-- JS -->
   <script>
@@ -388,21 +407,29 @@
     });
     window.addEventListener('DOMContentLoaded', calc);
 
-    // ========= LEAD: salvar e redirecionar =========
+    // ========= CONFIG / HELPERS =========
     // Coloque aqui seu endpoint Formspree. Se deixar vazio, usamos fallback local.
     const FORMSPREE_URL = 'YOUR_FORMSPREE_ENDPOINT'; // ex: 'https://formspree.io/f/abcd1234'
+    const KEY_LOCAL = 'edifiq_leads';
 
-    const leadForm = document.getElementById('leadForm');
-    const leadOk   = document.getElementById('leadOk');
-    const leadErr  = document.getElementById('leadErr');
+    const normPhone = v => (v||'').replace(/\D+/g,'');
 
-    function downloadCSV(rowObj){
-      const headers = ['timestamp','nome','email','origem'];
+    function saveLocal(row){
+      try{
+        const prev = JSON.parse(localStorage.getItem(KEY_LOCAL) || '[]');
+        prev.push({ ts: Date.now(), ...row });
+        localStorage.setItem(KEY_LOCAL, JSON.stringify(prev));
+      }catch(_){}
+    }
+
+    function downloadCSV(row){
+      const headers = ['timestamp','nome','email','whatsapp','origem'];
       const values = [
         new Date().toISOString(),
-        rowObj.nome || '',
-        rowObj.email || '',
-        'index'
+        row.nome || '',
+        row.email || '',
+        row.whatsapp || '',
+        row.origem || ''
       ];
       const csv = headers.join(',') + '\n' + values.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
       const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
@@ -416,29 +443,26 @@
       URL.revokeObjectURL(url);
     }
 
-    function saveLocal(rowObj){
-      try{
-        const key = 'edifiq_leads';
-        const prev = JSON.parse(localStorage.getItem(key) || '[]');
-        prev.push({ ts: Date.now(), ...rowObj });
-        localStorage.setItem(key, JSON.stringify(prev));
-      }catch(_){}
-    }
-
-    async function sendLeadOnline(data){
+    async function sendOnline(subject, data){
       if(!FORMSPREE_URL || !/^https?:\/\//.test(FORMSPREE_URL)) {
         return { ok:false, offline:true };
       }
       const formData = new FormData();
-      formData.append('_subject', 'Novo lead (index)');
+      formData.append('_subject', subject);
       formData.append('_captcha', 'false');
       formData.append('nome', data.nome);
       formData.append('email', data.email);
-      formData.append('origem', 'index');
+      formData.append('whatsapp', data.whatsapp || '');
+      formData.append('origem', data.origem || '');
 
       const r = await fetch(FORMSPREE_URL, { method:'POST', body: formData, headers:{ 'Accept':'application/json' } });
       return { ok: r.ok };
     }
+
+    // ========= LEAD CTA (contato) =========
+    const leadForm = document.getElementById('leadForm');
+    const leadOk   = document.getElementById('leadOk');
+    const leadErr  = document.getElementById('leadErr');
 
     leadForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
@@ -449,16 +473,22 @@
 
       const payload = {
         nome:  leadForm.nome.value.trim(),
-        email: leadForm.email.value.trim()
+        email: leadForm.email.value.trim(),
+        whatsapp: normPhone(leadForm.whatsapp.value),
+        origem: 'index-cta'
       };
 
+      if(!payload.nome || !payload.email || !payload.whatsapp){
+        btn.disabled = false; btn.textContent = 'Diagnóstico';
+        return;
+      }
+
       try{
-        const res = await sendLeadOnline(payload);
+        const res = await sendOnline('Novo lead (CTA)', payload);
         if(res.ok){
           leadOk.classList.remove('hidden');
           window.location.href = 'diagnostico.html';
         }else{
-          // fallback: salva local + baixa CSV e redireciona
           saveLocal(payload);
           downloadCSV(payload);
           leadErr.classList.remove('hidden');
@@ -471,6 +501,58 @@
         window.location.href = 'diagnostico.html';
       }finally{
         btn.disabled = false; btn.textContent = 'Diagnóstico';
+      }
+    });
+
+    // ========= POPUP (nav + hero) =========
+    const dxModal = document.getElementById('dxModal');
+    const dxForm  = document.getElementById('dxForm');
+    const dxOk    = document.getElementById('dxOk');
+
+    function openDx(){ dxModal.classList.remove('hidden'); dxModal.classList.add('flex'); }
+    function closeDx(){ dxModal.classList.add('hidden'); dxModal.classList.remove('flex'); }
+    document.getElementById('dxClose')?.addEventListener('click', closeDx);
+    dxModal.addEventListener('click', (e)=>{ if(e.target===dxModal) closeDx(); });
+
+    // Todos os links para diagnostico.html marcados com data-dx abrem o modal
+    document.querySelectorAll('[data-dx]').forEach(el=>{
+      el.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openDx();
+      });
+    });
+
+    dxForm?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const btn = dxForm.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Enviando…';
+
+      const payload = {
+        nome:  dxForm.nome.value.trim(),
+        email: dxForm.email.value.trim(),
+        whatsapp: normPhone(dxForm.whatsapp.value),
+        origem: 'popup-dx'
+      };
+
+      if(!payload.nome || !payload.email || !payload.whatsapp){
+        btn.disabled = false; btn.textContent = 'Continuar para diagnóstico';
+        return;
+      }
+
+      try{
+        const res = await sendOnline('Novo lead (popup diagnóstico)', payload);
+        if(!res.ok){
+          saveLocal(payload);
+          downloadCSV(payload);
+        }
+        dxOk.classList.remove('hidden');
+        window.location.href = 'diagnostico.html';
+      }catch(_e){
+        saveLocal(payload);
+        downloadCSV(payload);
+        window.location.href = 'diagnostico.html';
+      }finally{
+        btn.disabled = false; btn.textContent = 'Continuar para diagnóstico';
       }
     });
   </script>
