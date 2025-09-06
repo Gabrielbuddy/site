@@ -21,6 +21,7 @@
     .soft-shadow{box-shadow:0 12px 30px rgba(0,0,0,.08)}
     .bar-split{background:linear-gradient(to right, rgb(var(--red)) 0 50%, rgb(var(--green)) 50% 100%)}
     .badge-dot{width:8px;height:8px;border-radius:999px;background:rgb(var(--green))}
+    .modal-backdrop{background:rgba(15,23,42,.6)}
   </style>
 </head>
 <body class="antialiased text-slate-900 bg-white">
@@ -36,8 +37,9 @@
         <a href="#calculadora" class="hover:text-emerald-700">Estimativa</a>
         <a href="#servicos" class="hover:text-emerald-700">Serviços</a>
         <a href="#faq" class="hover:text-emerald-700">Dúvidas</a>
-        <!-- Botão de Diagnóstico -->
-        <a href="diagnostico.html" class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
+        <!-- Diagnóstico: abre popup -->
+        <a href="diagnostico.html" data-dx
+           class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
           Diagnóstico
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
@@ -60,8 +62,9 @@
           <strong>Crescimento e inovação</strong> com automações, integrações e <strong>produtos web</strong> que geram resultado.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <!-- Botão leva ao diagnóstico -->
-          <a href="diagnostico.html" class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
+          <!-- Diagnóstico: abre popup -->
+          <a href="diagnostico.html" data-dx
+             class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
             Diagnóstico
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
@@ -69,7 +72,7 @@
             Como funciona
           </a>
         </div>
-        <!-- Contadores: 1 coluna no mobile, 3 no desktop -->
+        <!-- Contadores -->
         <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
           <div>
             <div class="text-2xl md:text-3xl font-extrabold" data-counter="100" data-plus="true">+0</div>
@@ -86,7 +89,6 @@
         </div>
       </div>
 
-      <!-- Logo: oculta no mobile, mostra no md+ -->
       <div class="relative hidden md:block">
         <div class="aspect-video rounded-2xl border border-slate-200 soft-shadow grid place-items-center bg-white">
           <img src="./edifiq.jpg" alt="EDIFIQ" class="w-72 lg:w-80 h-auto object-contain opacity-95" />
@@ -128,7 +130,6 @@
     <div class="max-w-6xl mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-center">Como funciona</h2>
 
-      <!-- 1 coluna no mobile, 4 no desktop -->
       <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
         <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
           <span class="text-sm md:text-base font-bold text-emerald-700 block">1. Diagnóstico</span>
@@ -195,7 +196,6 @@
         <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
           <h3 class="font-semibold text-lg">Resultados estimados</h3>
 
-          <!-- 1 coluna no mobile, 2 no desktop -->
           <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
               <p class="text-xs text-slate-500">Custo-hora médio</p>
@@ -297,11 +297,12 @@
       <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 md:p-12 text-center soft-shadow">
         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Vamos acelerar seu projeto?</h2>
         <p class="mt-3 text-slate-600">Solicite um diagnóstico gratuito e receba um plano inicial.</p>
-        <!-- FORM: salva lead centralizado e redireciona para diagnostico.html -->
+        <!-- FORM CTA: nome + email + whatsapp -->
         <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto" novalidate>
           <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
-          <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Diagnóstico</button>
+          <input required name="whatsapp" type="tel" inputmode="tel" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition md:col-span-3">Diagnóstico</button>
         </form>
         <p id="leadOk" class="hidden mt-3 text-sm text-emerald-700">Dados salvos. Redirecionando…</p>
       </div>
@@ -328,6 +329,25 @@
     </div>
     <div class="w-full h-2 mt-6 bar-split"></div>
   </footer>
+
+  <!-- MODAL (popup Diagnóstico) -->
+  <div id="dxModal" class="fixed inset-0 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 modal-backdrop"></div>
+    <div class="relative w-full max-w-md rounded-2xl bg-white p-6 soft-shadow border border-slate-200">
+      <button id="dxClose" class="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label="Fechar">
+        ✕
+      </button>
+      <h3 class="text-xl font-bold">Antes do diagnóstico</h3>
+      <p class="text-sm text-slate-600 mt-1">Preencha seus dados para continuarmos:</p>
+      <form id="dxForm" class="mt-4 grid gap-3" novalidate>
+        <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <input required name="whatsapp" type="tel" inputmode="tel" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <button class="mt-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Continuar para diagnóstico</button>
+      </form>
+      <p id="dxOk" class="hidden mt-3 text-sm text-emerald-700">Dados salvos. Redirecionando…</p>
+    </div>
+  </div>
 
   <!-- JS -->
   <script>
@@ -386,10 +406,11 @@
     });
     window.addEventListener('DOMContentLoaded', calc);
 
-    // ========= LEAD: salvar no Google Sheets (centralizado) e backup local =========
+    // ========= Config central =========
     const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyz9CfIDxS_BBpxcOc8wLvloPIixV4Thyz7O3o5l-xjC0tZb6fz6EzqD3Vf6qt19w1W3g/exec';
+    const LEADS_KEY = 'edifiq_leads';
 
-    // Captura parâmetros de campanha (utm_source etc.) para enriquecer a origem
+    // UTM
     function getUTM(){
       const p = new URLSearchParams(location.search);
       const utms = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content']
@@ -399,12 +420,14 @@
       return utms || '';
     }
 
+    // Normaliza WhatsApp (só dígitos)
+    function normPhone(v){ return (v||'').replace(/\D+/g,''); }
+
     async function salvarNoSheets(payload){
       try{
-        // usar text/plain para evitar preflight/CORS
         await fetch(WEBAPP_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight
           body: JSON.stringify(payload),
         });
       }catch(e){
@@ -412,59 +435,94 @@
       }
     }
 
-    // backup local (opcional)
-    const LEADS_KEY = 'edifiq_leads';
     function salvarLeadLocal(payload){
       try{
         const arr = JSON.parse(localStorage.getItem(LEADS_KEY) || '[]');
-        arr.push({ ...payload, ts: Date.now(), origem: payload.origem || 'index' });
+        arr.push({ ...payload, ts: Date.now() });
         localStorage.setItem(LEADS_KEY, JSON.stringify(arr));
       }catch(_){}
     }
 
+    function origemComUTM(base='index'){
+      const utm = getUTM();
+      return utm ? `${base}?${utm}` : base;
+    }
+
+    // ========= CTA form (nome + email + whatsapp) =========
     const leadForm = document.getElementById('leadForm');
     leadForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
 
-      // validação simples
       const btn = leadForm.querySelector('button');
       const nome  = (leadForm.nome.value || '').trim();
       const email = (leadForm.email.value || '').trim();
-      if(!nome || !email){ return; }
+      const whatsapp = normPhone(leadForm.whatsapp.value);
+
+      if(!nome || !email || !whatsapp){
+        // browser já marca required, mas conferimos
+        return;
+      }
 
       btn.disabled = true; btn.textContent = 'Salvando…';
 
-      // monta payload
-      const origemBase = 'index';
-      const utm = getUTM();
-      const origem = utm ? `${origemBase}?${utm}` : origemBase;
-
       const payload = {
-        // os campos abaixo devem existir na planilha (headers) ou serão ignorados
-        empresa:  '',         // opcional no index
-        site:     '',         // opcional no index
-        tamanho:  '',         // opcional no index
-        segmento: '',         // opcional no index
-        objetivos:'',         // opcional no index
-        processos:'',         // opcional no index
-        orcamento:'',         // opcional no index
-        canais:   '',         // opcional no index
-        desafios: '',         // opcional no index
-        urgencia: '',         // opcional no index
-        origem,               // "index" + utms se houver
-        // Extras que não vão para colunas (mas ficam no backup local):
-        nome, email
+        empresa:"",site:"",tamanho:"",segmento:"",objetivos:"",processos:"",orcamento:"",
+        canais:"",desafios:"",urgencia:"",
+        origem: origemComUTM('index'),
+        nome, email, whatsapp
       };
 
-      // salva centralizado (espera até 1.2s no máximo para não travar UX)
       const timeout = new Promise(res => setTimeout(res, 1200));
       await Promise.race([salvarNoSheets(payload), timeout]);
 
-      // backup local
-      salvarLeadLocal({ ...payload, nome, email });
-
-      // mensagem e redireciona
+      salvarLeadLocal(payload);
       document.getElementById('leadOk').classList.remove('hidden');
+      window.location.href = 'diagnostico.html';
+    });
+
+    // ========= Popup Diagnóstico (nav + hero) =========
+    const dxModal = document.getElementById('dxModal');
+    const dxForm  = document.getElementById('dxForm');
+    const dxOk    = document.getElementById('dxOk');
+
+    function openDx(){ dxModal.classList.remove('hidden'); dxModal.classList.add('flex'); }
+    function closeDx(){ dxModal.classList.add('hidden'); dxModal.classList.remove('flex'); }
+
+    document.getElementById('dxClose')?.addEventListener('click', closeDx);
+    dxModal.addEventListener('click', (e)=>{ if(e.target===dxModal) closeDx(); });
+
+    // Qualquer link/botão com data-dx abre o modal
+    document.querySelectorAll('[data-dx]').forEach(el=>{
+      el.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openDx();
+      });
+    });
+
+    // Submissão do popup
+    dxForm?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const btn = dxForm.querySelector('button');
+      const nome  = (dxForm.nome.value || '').trim();
+      const email = (dxForm.email.value || '').trim();
+      const whatsapp = normPhone(dxForm.whatsapp.value);
+
+      if(!nome || !email || !whatsapp) return;
+
+      btn.disabled = true; btn.textContent = 'Salvando…';
+
+      const payload = {
+        empresa:"",site:"",tamanho:"",segmento:"",objetivos:"",processos:"",orcamento:"",
+        canais:"",desafios:"",urgencia:"",
+        origem: origemComUTM('popup-dx'),
+        nome, email, whatsapp
+      };
+
+      const timeout = new Promise(res => setTimeout(res, 1200));
+      await Promise.race([salvarNoSheets(payload), timeout]);
+
+      salvarLeadLocal(payload);
+      dxOk.classList.remove('hidden');
       window.location.href = 'diagnostico.html';
     });
   </script>
