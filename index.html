@@ -5,11 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EDIFIQ — Estratégia, Execução e Performance</title>
   <meta name="description" content="Assessoria de crescimento: automações, integrações, sites e mobile focados em performance." />
+
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="./edifiq.png" />
+  <link rel="icon" type="image/jpeg" href="./edifiq.jpg" />
   <link rel="apple-touch-icon" href="./edifiq.png" />
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{ --red:200,16,46; --green:0,122,61; }
+    :root{
+      --red:   200,16,46;   /* vermelho EDIFIQ */
+      --green: 0,122,61;    /* verde EDIFIQ    */
+    }
     .soft-shadow{box-shadow:0 12px 30px rgba(0,0,0,.08)}
     .bar-split{background:linear-gradient(to right, rgb(var(--red)) 0 50%, rgb(var(--green)) 50% 100%)}
     .badge-dot{width:8px;height:8px;border-radius:999px;background:rgb(var(--green))}
@@ -29,9 +37,11 @@
         <a href="#calculadora" class="hover:text-emerald-700">Estimativa</a>
         <a href="#servicos" class="hover:text-emerald-700">Serviços</a>
         <a href="#faq" class="hover:text-emerald-700">Dúvidas</a>
+        <!-- Diagnóstico: abre popup -->
         <a href="diagnostico.html" data-dx
            class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
           Diagnóstico
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
         </a>
       </div>
     </nav>
@@ -42,16 +52,44 @@
     <div class="w-full h-2 bar-split"></div>
     <div class="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
       <div>
-        <div class="inline-flex items-center gap-2 rounded-full bg-white/90 border border-slate-200 px-3 py-1 text-xs mb-4">
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/90 border border-slate-200 px-3 py-1 text-xs font-medium mb-4">
           <span class="badge-dot"></span> Inovando com tecnologia
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Estratégia, <span class="text-emerald-700">execução</span> e <span class="text-red-600">performance</span></h1>
-        <p class="mt-4 text-slate-600 text-lg">Crescimento e inovação com automações, integrações e produtos web que geram resultado.</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
+          Estratégia, <span class="text-emerald-700">execução</span> e <span class="text-red-600">performance</span>
+        </h1>
+        <p class="mt-4 text-slate-600 text-lg">
+          <strong>Crescimento e inovação</strong> com automações, integrações e <strong>produtos web</strong> que geram resultado.
+        </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <a href="diagnostico.html" data-dx class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Diagnóstico</a>
-          <a href="#beneficios" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-5 py-3 hover:text-emerald-700">Como funciona</a>
+          <!-- Diagnóstico: abre popup -->
+          <a href="diagnostico.html" data-dx
+             class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
+            Diagnóstico
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="#beneficios" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-5 py-3 hover:border-emerald-700 hover:text-emerald-700 transition">
+            Como funciona
+          </a>
+        </div>
+        <!-- Contadores: 1 coluna no mobile, 3 no desktop -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-2xl md:text-3xl font-extrabold" data-counter="100" data-plus="true">+0</div>
+            <p class="text-xs text-slate-500">projetos</p>
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-extrabold" data-counter="100" data-plus="true">+0</div>
+            <p class="text-xs text-slate-500">segmentos</p>
+          </div>
+          <div>
+            <div class="text-2xl md:text-3xl font-extrabold" data-counter="11">0</div>
+            <p class="text-xs text-slate-500">colaboradores</p>
+          </div>
         </div>
       </div>
+
+      <!-- Logo: oculta no mobile, mostra no md+ -->
       <div class="relative hidden md:block">
         <div class="aspect-video rounded-2xl border border-slate-200 soft-shadow grid place-items-center bg-white">
           <img src="./edifiq.jpg" alt="EDIFIQ" class="w-72 lg:w-80 h-auto object-contain opacity-95" />
@@ -61,17 +99,213 @@
     <div class="w-full h-2 bar-split"></div>
   </section>
 
+  <!-- BENEFÍCIOS -->
+  <section id="beneficios" class="py-20 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Mais resultado, menos atrito</h2>
+        <p class="mt-3 text-slate-600">Diagnóstico, plano, execução e otimização contínua — do zero ao crescimento.</p>
+      </div>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow text-center">
+          <div class="h-10 w-10 mx-auto rounded-lg bg-black text-white grid place-items-center font-bold">1</div>
+          <h3 class="mt-4 font-semibold text-lg">Estratégia de entendimento inicial</h3>
+          <p class="mt-2 text-sm text-slate-600">Você fornece as informações e nós <strong>sabemos</strong> onde podemos trabalhar.</p>
+        </div>
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow text-center">
+          <div class="h-10 w-10 mx-auto rounded-lg bg-emerald-600 text-white grid place-items-center font-bold">2</div>
+          <h3 class="mt-4 font-semibold text-lg">Execução rápida</h3>
+          <p class="mt-2 text-sm text-slate-600">Temos diversos colaboradores dispostos a trabalhar no seu projeto.</p>
+        </div>
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow text-center">
+          <div class="h-10 w-10 mx-auto rounded-lg bg-red-600 text-white grid place-items-center font-bold">3</div>
+          <h3 class="mt-4 font-semibold text-lg">Manutenção e sua satisfação garantida</h3>
+          <p class="mt-2 text-sm text-slate-600">Oferecemos opções para que você não se preocupe com a manutenção dos serviços nunca mais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPAS -->
+  <section id="etapas" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-center">Como funciona</h2>
+
+      <!-- 1 coluna no mobile, 4 no desktop -->
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
+          <span class="text-sm md:text-base font-bold text-emerald-700 block">1. Diagnóstico</span>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Sabemos</strong> o que está acontecendo na sua empresa e como podemos ajudar.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
+          <span class="text-sm md:text-base font-bold text-emerald-700 block">2. Plano</span>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Traçamos</strong> um plano para otimizar seus resultados.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
+          <span class="text-sm md:text-base font-bold text-emerald-700 block">3. Execução</span>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Fazemos</strong> as alterações necessárias — seja web ou automações.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
+          <span class="text-sm md:text-base font-bold text-emerald-700 block">4. Otimização</span>
+          <p class="mt-3 text-base text-slate-700">
+            <strong>Estamos</strong> sempre disponíveis para melhorar e aprimorar seu negócio.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULADORA -->
+  <section id="calculadora" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Estimativa de custos</h2>
+        <p class="mt-3 text-slate-600">Veja o impacto das automações no seu time.</p>
+      </div>
+
+      <div class="mt-8 grid md:grid-cols-2 gap-6 items-start">
+        <!-- Inputs -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50">
+          <div class="grid gap-4">
+            <label class="text-sm font-medium">Quantidade de funcionários</label>
+            <input id="inp-func" type="number" min="1" value="10" class="w-full px-4 py-3 rounded-xl border border-slate-300" />
+
+            <label class="text-sm font-medium">Salário médio mensal por funcionário (R$)</label>
+            <input id="inp-sal" type="number" min="0" step="100" value="3500" class="w-full px-4 py-3 rounded-xl border border-slate-300" />
+
+            <label class="text-sm font-medium">Horas poupadas por funcionário / semana</label>
+            <input id="inp-horas" type="number" min="0" step="1" value="4" class="w-full px-4 py-3 rounded-xl border border-slate-300" />
+
+            <label class="text-sm font-medium">% das tarefas automatizáveis</label>
+            <input id="inp-perc" type="number" min="0" max="100" value="60" class="w-full px-4 py-3 rounded-xl border border-slate-300" />
+
+            <label class="text-sm font-medium">Custo mensal do projeto (R$)</label>
+            <input id="inp-custo" type="number" min="0" step="100" value="5000" class="w-full px-4 py-3 rounded-xl border border-slate-300" />
+          </div>
+          <p class="text-xs text-slate-500 mt-3">* Consideramos 160h/mês por funcionário para o cálculo do custo-hora.</p>
+        </div>
+
+        <!-- Resultados -->
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
+          <h3 class="font-semibold text-lg">Resultados estimados</h3>
+
+          <!-- 1 coluna no mobile, 2 no desktop -->
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <p class="text-xs text-slate-500">Custo-hora médio</p>
+              <p id="out-hora" class="text-xl md:text-2xl font-extrabold leading-tight break-words">R$ 0,00</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <p class="text-xs text-slate-500">Horas poupadas/mês</p>
+              <p id="out-horas-mes" class="text-xl md:text-2xl font-extrabold leading-tight break-words">0 h</p>
+            </div>
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <p class="text-xs text-emerald-700">Economia mensal</p>
+              <p id="out-econ-mes" class="text-xl md:text-2xl font-extrabold text-emerald-700 leading-tight break-words">R$ 0,00</p>
+            </div>
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <p class="text-xs text-emerald-700">Economia anual</p>
+              <p id="out-econ-ano" class="text-xl md:text-2xl font-extrabold text-emerald-700 leading-tight break-words">R$ 0,00</p>
+            </div>
+            <div class="p-4 rounded-xl bg-red-50 border border-red-200 md:col-span-2">
+              <p class="text-xs text-red-700">ROI estimado</p>
+              <p id="out-roi" class="text-xl md:text-2xl font-extrabold text-red-700 leading-tight break-words">0%</p>
+              <p id="out-payback" class="text-xs text-slate-600 mt-1">Payback: —</p>
+            </div>
+          </div>
+
+          <a href="#contato" class="mt-6 inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
+            Quero implementar essa economia
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos" class="py-20 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Nossos Serviços</h2>
+      <p class="mt-3 text-slate-600 max-w-2xl mx-auto">Automações, integrações, mobile e sites para acelerar seu crescimento.</p>
+
+      <div class="mt-12 grid md:grid-cols-4 gap-8 justify-center">
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2h6v2a2 2 0 002 2h1a2 2 0 002-2V7a2 2 0 00-2-2h-1a2 2 0 00-2 2v2H9V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h1a2 2 0 002-2z"/>
+          </svg>
+          <h3 class="font-semibold text-lg">Automações</h3>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 16h10M5 12h14M12 20h.01M12 4h.01"/>
+          </svg>
+          <h3 class="font-semibold text-lg">Integrações</h3>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+          </svg>
+          <h3 class="font-semibold text-lg">Mobile</h3>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
+          </svg>
+          <h3 class="font-semibold text-lg">Sites</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-20 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-center">Dúvidas frequentes</h2>
+      <div class="mt-8 grid md:grid-cols-2 gap-6">
+        <details class="p-5 rounded-2xl border border-slate-200 bg-white">
+          <summary class="font-semibold cursor-pointer">Como funciona o diagnóstico?</summary>
+          <p class="mt-2 text-sm text-slate-600"><strong>Trabalhamos</strong> em recolher informações sobre o seu negócio visando onde podem ser implementadas as melhorias.</p>
+        </details>
+        <details class="p-5 rounded-2xl border border-slate-200 bg-white">
+          <summary class="font-semibold cursor-pointer">Quais integrações vocês fazem?</summary>
+          <p class="mt-2 text-sm text-slate-600">Automações e integrações com apps e plataformas, além de agentes de IA, chatbots, sites e aplicativos.</p>
+        </details>
+        <details class="p-5 rounded-2xl border border-slate-200 bg-white">
+          <summary class="font-semibold cursor-pointer">Prazos de implementação?</summary>
+          <p class="mt-2 text-sm text-slate-600"><strong>Depende</strong> do tamanho do seu projeto.</p>
+        </details>
+        <details class="p-5 rounded-2xl border border-slate-200 bg-white">
+          <summary class="font-semibold cursor-pointer">Vocês trabalham com contratos mensais?</summary>
+          <p class="mt-2 text-sm text-slate-600">Caso você queira garantir a manutenção e hospedagem, sim.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section id="contato" class="py-20 bg-white">
     <div class="max-w-6xl mx-auto px-4">
-      <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 text-center soft-shadow">
-        <h2 class="text-3xl md:text-4xl font-extrabold">Vamos acelerar seu projeto?</h2>
+      <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 md:p-12 text-center soft-shadow">
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Vamos acelerar seu projeto?</h2>
         <p class="mt-3 text-slate-600">Solicite um diagnóstico gratuito e receba um plano inicial.</p>
+        <!-- FORM CTA: nome + email + whatsapp -->
         <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto" novalidate>
-          <input required name="nome" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300" />
-          <input required type="email" name="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300" />
-          <input required name="whatsapp" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300" />
-          <button class="md:col-span-3 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700">Diagnóstico</button>
+          <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <input required name="whatsapp" type="tel" inputmode="tel" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition md:col-span-3">Diagnóstico</button>
         </form>
         <p id="leadOk" class="hidden mt-3 text-sm text-emerald-700">Dados salvos. Redirecionando…</p>
       </div>
@@ -79,56 +313,224 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="py-10 border-t border-slate-200 bg-white text-center">
-    <p class="text-sm text-slate-500">© <span id="year"></span> — EDIFIQ</p>
+  <footer class="py-10 border-t border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6 items-center">
+      <div class="flex items-center gap-3">
+        <img src="./edifiq.jpg" alt="EDIFIQ" class="h-9 w-auto rounded" />
+        <div>
+          <p class="font-semibold">EDIFIQ</p>
+          <p class="text-xs text-slate-500">© <span id="year"></span> — Todos os direitos reservados</p>
+        </div>
+      </div>
+      <div class="text-sm text-slate-500 text-center md:text-left">
+        <a href="#beneficios" class="hover:text-emerald-700">Por que EDIFIQ</a> ·
+        <a href="#etapas" class="hover:text-emerald-700">Como funciona</a> ·
+        <a href="#servicos" class="hover:text-emerald-700">Serviços</a> ·
+        <a href="#faq" class="hover:text-emerald-700">Dúvidas</a>
+      </div>
+      <div class="md:text-right text-sm text-slate-500">Feito para performar</div>
+    </div>
+    <div class="w-full h-2 mt-6 bar-split"></div>
   </footer>
 
-  <!-- POPUP -->
+  <!-- MODAL (popup Diagnóstico) -->
   <div id="dxModal" class="fixed inset-0 hidden items-center justify-center p-4">
     <div class="absolute inset-0 modal-backdrop"></div>
     <div class="relative w-full max-w-md rounded-2xl bg-white p-6 soft-shadow border border-slate-200">
-      <button id="dxClose" class="absolute top-3 right-3">✕</button>
+      <button id="dxClose" class="absolute top-3 right-3 p-2 rounded-full hover:bg-slate-100" aria-label="Fechar">
+        ✕
+      </button>
       <h3 class="text-xl font-bold">Antes do diagnóstico</h3>
-      <form id="dxForm" class="mt-4 grid gap-3">
-        <input required name="nome" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300" />
-        <input required type="email" name="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300" />
-        <input required name="whatsapp" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300" />
-        <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700">Continuar</button>
+      <p class="text-sm text-slate-600 mt-1">Preencha seus dados para continuarmos:</p>
+      <form id="dxForm" class="mt-4 grid gap-3" novalidate>
+        <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <input required name="whatsapp" type="tel" inputmode="tel" placeholder="Seu WhatsApp" class="px-4 py-3 rounded-xl border border-slate-300" />
+        <button class="mt-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Continuar para diagnóstico</button>
       </form>
       <p id="dxOk" class="hidden mt-3 text-sm text-emerald-700">Dados salvos. Redirecionando…</p>
     </div>
   </div>
 
+  <!-- JS -->
   <script>
+    // ano
     document.getElementById('year').textContent = new Date().getFullYear();
-    const WEBAPP_URL = 'SUA_URL_DO_WEBAPP'; // substitua
-    function norm(v){return (v||'').replace(/\D+/g,'');}
 
-    async function salvar(payload){
-      try{await fetch(WEBAPP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});}catch(e){console.warn(e);}
+    // Counters
+    const counters = document.querySelectorAll('[data-counter]');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach((e)=>{
+        if(e.isIntersecting){
+          const el=e.target, end=parseInt(el.getAttribute('data-counter'),10)||0;
+          let cur=0, step=Math.ceil(end/40);
+          const plus = el.getAttribute('data-plus') === 'true';
+          const tick=()=>{
+            cur=Math.min(cur+step,end);
+            el.textContent=(plus?'+':'')+cur;
+            if(cur<end) requestAnimationFrame(tick)
+          };
+          tick(); io.unobserve(el);
+        }
+      })
+    },{threshold:.4});
+    counters.forEach(c=>io.observe(c));
+
+    // Calculadora
+    const BRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+    function calc(){
+      const func = +document.getElementById('inp-func').value||0;
+      const sal  = +document.getElementById('inp-sal').value||0;
+      const horas= +document.getElementById('inp-horas').value||0;
+      const perc = Math.min(100, Math.max(0, +document.getElementById('inp-perc').value||0));
+      const custo= +document.getElementById('inp-custo').value||0;
+
+      const horasMesPessoa = 160;
+      const custoHora = sal / horasMesPessoa;
+      const horasPoupadasMes = func * (horas * 4) * (perc/100);
+      const econMes = horasPoupadasMes * custoHora;
+      const econAno = econMes * 12;
+
+      let roi = 0, payback = '—';
+      if(custo > 0){
+        roi = ((econMes - custo) / custo) * 100;
+        payback = econMes > 0 ? (custo / econMes).toFixed(1) + ' meses' : '—';
+      }
+
+      document.getElementById('out-hora').textContent      = BRL.format(Math.max(0, custoHora));
+      document.getElementById('out-horas-mes').textContent = Math.max(0, Math.round(horasPoupadasMes)) + ' h';
+      document.getElementById('out-econ-mes').textContent  = BRL.format(Math.max(0, econMes));
+      document.getElementById('out-econ-ano').textContent  = BRL.format(Math.max(0, econAno));
+      document.getElementById('out-roi').textContent       = (isFinite(roi) ? Math.round(roi) : 0) + '%';
+      document.getElementById('out-payback').textContent   = 'Payback: ' + payback;
+    }
+    ['inp-func','inp-sal','inp-horas','inp-perc','inp-custo'].forEach(id=>{
+      document.addEventListener('input', e=>{ if(e.target && e.target.id===id) calc(); });
+    });
+    window.addEventListener('DOMContentLoaded', calc);
+
+    // ========= Config central =========
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyz9CfIDxS_BBpxcOc8wLvloPIixV4Thyz7O3o5l-xjC0tZb6fz6EzqD3Vf6qt19w1W3g/exec'; // 🔁 troque pela sua URL /exec
+    const LEADS_KEY = 'edifiq_leads';
+
+    // UTM
+    function getUTM(){
+      const p = new URLSearchParams(location.search);
+      const utms = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content']
+        .map(k => p.get(k) ? `${k}=${p.get(k)}` : '')
+        .filter(Boolean)
+        .join('&');
+      return utms || '';
     }
 
-    function saveAndGo(payload){
-      localStorage.setItem('edifiq_contact',JSON.stringify(payload));
-      salvar(payload);
-      window.location.href='diagnostico.html';
+    // Normaliza WhatsApp (só dígitos)
+    function normPhone(v){ return (v||'').replace(/\D+/g,''); }
+
+    async function salvarNoSheets(payload){
+      try{
+        await fetch(WEBAPP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight
+          body: JSON.stringify(payload),
+        });
+      }catch(e){
+        console.warn('Falha ao salvar no Sheets:', e);
+      }
     }
 
-    // CTA
-    leadForm.addEventListener('submit',e=>{
+    function salvarLeadLocal(payload){
+      try{
+        const arr = JSON.parse(localStorage.getItem(LEADS_KEY) || '[]');
+        arr.push({ ...payload, ts: Date.now() });
+        localStorage.setItem(LEADS_KEY, JSON.stringify(arr));
+      }catch(_){}
+    }
+
+    function origemComUTM(base='index'){
+      const utm = getUTM();
+      return utm ? `${base}?${utm}` : base;
+    }
+
+    // ========= CTA form (nome + email + whatsapp) =========
+    const leadForm = document.getElementById('leadForm');
+    leadForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const p={nome:leadForm.nome.value,email:leadForm.email.value,whatsapp:norm(leadForm.whatsapp.value),origem:'index'};
-      saveAndGo(p);
+
+      const btn = leadForm.querySelector('button');
+      const nome  = (leadForm.nome.value || '').trim();
+      const email = (leadForm.email.value || '').trim();
+      const whatsapp = normPhone(leadForm.whatsapp.value);
+
+      if(!nome || !email || !whatsapp){ return; }
+
+      btn.disabled = true; btn.textContent = 'Salvando…';
+
+      const payload = {
+        empresa:"",site:"",tamanho:"",segmento:"",objetivos:"",processos:"",orcamento:"",
+        canais:"",desafios:"",urgencia:"",
+        origem: origemComUTM('index'),
+        nome, email, whatsapp
+      };
+
+      const timeout = new Promise(res => setTimeout(res, 1200));
+      await Promise.race([salvarNoSheets(payload), timeout]);
+
+      salvarLeadLocal(payload);
+      // 🔥 guarda contato pro diagnóstico
+      localStorage.setItem('edifiq_contact', JSON.stringify({ nome, email, whatsapp }));
+
+      document.getElementById('leadOk').classList.remove('hidden');
+      window.location.href = 'diagnostico.html';
     });
 
-    // Modal
-    document.querySelectorAll('[data-dx]').forEach(el=>el.onclick=(e)=>{e.preventDefault();dxModal.classList.remove('hidden');dxModal.classList.add('flex')});
-    dxClose.onclick=()=>{dxModal.classList.add('hidden');};
-    dxForm.onsubmit=e=>{
+    // ========= Popup Diagnóstico (nav + hero) =========
+    const dxModal = document.getElementById('dxModal');
+    const dxForm  = document.getElementById('dxForm');
+    const dxOk    = document.getElementById('dxOk');
+
+    function openDx(){ dxModal.classList.remove('hidden'); dxModal.classList.add('flex'); }
+    function closeDx(){ dxModal.classList.add('hidden'); dxModal.classList.remove('flex'); }
+
+    document.getElementById('dxClose')?.addEventListener('click', closeDx);
+    dxModal.addEventListener('click', (e)=>{ if(e.target===dxModal) closeDx(); });
+
+    // Qualquer link/botão com data-dx abre o modal
+    document.querySelectorAll('[data-dx]').forEach(el=>{
+      el.addEventListener('click', (e)=>{
+        e.preventDefault();
+        openDx();
+      });
+    });
+
+    // Submissão do popup
+    dxForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const p={nome:dxForm.nome.value,email:dxForm.email.value,whatsapp:norm(dxForm.whatsapp.value),origem:'popup'};
-      saveAndGo(p);
-    };
+      const btn = dxForm.querySelector('button');
+      const nome  = (dxForm.nome.value || '').trim();
+      const email = (dxForm.email.value || '').trim();
+      const whatsapp = normPhone(dxForm.whatsapp.value);
+
+      if(!nome || !email || !whatsapp) return;
+
+      btn.disabled = true; btn.textContent = 'Salvando…';
+
+      const payload = {
+        empresa:"",site:"",tamanho:"",segmento:"",objetivos:"",processos:"",orcamento:"",
+        canais:"",desafios:"",urgencia:"",
+        origem: origemComUTM('popup-dx'),
+        nome, email, whatsapp
+      };
+
+      const timeout = new Promise(res => setTimeout(res, 1200));
+      await Promise.race([salvarNoSheets(payload), timeout]);
+
+      salvarLeadLocal(payload);
+      // 🔥 guarda contato
+      localStorage.setItem('edifiq_contact', JSON.stringify({ nome, email, whatsapp }));
+
+      dxOk.classList.remove('hidden');
+      window.location.href = 'diagnostico.html';
+    });
   </script>
 </body>
 </html>
