@@ -123,8 +123,8 @@
         <div class="flex items-center justify-between">
           <button type="button" id="btnPrev" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Voltar</button>
           <div class="flex gap-2">
-            <!-- Apenas WhatsApp no final -->
-            <button type="button" id="btnWhats" class="hidden md:inline-flex px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
+            <!-- Apenas WhatsApp na etapa final -->
+            <button type="button" id="btnWhats" class="hidden px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
             <button type="button" id="btnNext" class="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700">Continuar</button>
           </div>
         </div>
@@ -207,7 +207,7 @@
       if(step<total){ step++; render(); }
     };
 
-    // Atualiza a prévia em tempo real quando estiver no passo final
+    // Atualiza prévia em tempo real quando estiver no passo final
     diagForm.addEventListener('input', ()=>{
       if(step===total) updatePreview();
     });
@@ -216,7 +216,7 @@
     btnWhats.onclick = ()=>{
       if(!diagForm.reportValidity()) return;
       const txt = encodeURIComponent(fmt(diagForm));
-      const phone = '5553999038427'; // +55 53 99903-8427
+      const phone = '5553999038427'; // seu número
       const url = `https://wa.me/${phone}?text=${txt}`;
       window.open(url, '_blank');
       document.getElementById('ok').classList.remove('hidden');
