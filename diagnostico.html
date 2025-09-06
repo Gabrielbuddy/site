@@ -1,246 +1,77 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>EDIFIQ — Diagnóstico</title>
-  <meta name="description" content="Diagnóstico EDIFIQ: entendemos seu negócio e mapeamos oportunidades de automação, integrações e produtos web." />
-  <link rel="icon" type="image/png" href="./edifiq.png" />
-  <link rel="icon" type="image/jpeg" href="./edifiq.jpg" />
-  <link rel="apple-touch-icon" href="./edifiq.png" />
+  <link rel="icon" type="image/png" href="./edifiq.png"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{ --red:200,16,46; --green:0,122,61; }
-    .bar-split{background:linear-gradient(to right, rgb(var(--red)) 0 50%, rgb(var(--green)) 50% 100%)}
+    :root{--red:200,16,46;--green:0,122,61;}
+    .bar-split{background:linear-gradient(to right,rgb(var(--red))50%,rgb(var(--green))50%)}
     .soft-shadow{box-shadow:0 12px 30px rgba(0,0,0,.08)}
-    .step.is-active{border-color:rgb(var(--green)); background:#f0fdf4}
+    .step.is-active{border-color:rgb(var(--green));background:#f0fdf4}
   </style>
 </head>
-<body class="antialiased text-slate-900 bg-white">
-  <!-- NAV mínima -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
-    <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="./index.html" class="flex items-center gap-3">
-        <img src="./edifiq.jpg" alt="EDIFIQ" class="h-9 w-auto rounded"/>
-      </a>
-      <a href="./index.html#contato" class="hidden md:inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
-        Voltar ao site
-      </a>
-    </nav>
-  </header>
+<body class="bg-white text-slate-900">
+<header class="sticky top-0 bg-white/90 border-b border-slate-200">
+  <nav class="max-w-6xl mx-auto flex justify-between p-3">
+    <a href="./index.html"><img src="./edifiq.jpg" class="h-9 rounded"/></a>
+  </nav>
+</header>
 
-  <!-- HERO -->
-  <section class="relative">
-    <div class="w-full h-2 bar-split"></div>
-    <div class="max-w-6xl mx-auto px-4 py-10 md:py-14 grid lg:grid-cols-2 gap-10 items-start">
+<section class="max-w-6xl mx-auto p-6">
+  <form id="diagForm" class="space-y-4">
+    <div class="grid grid-cols-4 gap-2">
+      <div id="p1" class="step border p-2 rounded text-center">Empresa</div>
+      <div id="p2" class="step border p-2 rounded text-center">Objetivos</div>
+      <div id="p3" class="step border p-2 rounded text-center">Canais</div>
+      <div id="p4" class="step border p-2 rounded text-center">Envio</div>
+    </div>
+    <div class="rounded-2xl border p-6 soft-shadow">
+      <div data-step="1" class="step-pane">
+        <input name="empresa" required placeholder="Empresa" class="border p-2 w-full mb-2 rounded"/>
+        <input name="site" required placeholder="Site" class="border p-2 w-full mb-2 rounded"/>
+      </div>
+      <div data-step="2" class="step-pane hidden">
+        <textarea name="objetivos" required placeholder="Objetivos" class="border p-2 w-full mb-2 rounded"></textarea>
+      </div>
+      <div data-step="3" class="step-pane hidden">
+        <input name="canais" required placeholder="Canais" class="border p-2 w-full mb-2 rounded"/>
+        <textarea name="desafios" required placeholder="Desafios" class="border p-2 w-full mb-2 rounded"></textarea>
+      </div>
+      <div data-step="4" class="step-pane hidden">
+        <select name="urgencia" required class="border p-2 w-full rounded mb-2">
+          <option value="">Urgência</option>
+          <option>Alta</option><option>Média</option><option>Baixa</option>
+        </select>
+        <pre id="preview" class="bg-slate-50 p-3 text-sm rounded"></pre>
+      </div>
+    </div>
+    <div class="flex justify-between">
+      <button type="button" id="btnPrev" class="border px-3 py-1 rounded">Voltar</button>
       <div>
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
-          Diagnóstico</span>
-        </h1>
-        <p class="mt-4 text-slate-600 text-lg">
-          Entendemos seu cenário atual, objetivos e desafios. Com base nisso, entregamos um plano com ações priorizadas de automações, integrações e produtos web.
-        </p>
-        <ul class="mt-6 space-y-2 text-slate-700">
-          <li>• Leva ~5 minutos</li>
-          <li>• Sem compromisso</li>
-          <li>• Retornamos com oportunidades e próximos passos</li>
-        </ul>
+        <button type="button" id="btnWhats" class="hidden border px-3 py-1 rounded">WhatsApp</button>
+        <button type="submit" id="btnSubmit" class="hidden bg-black text-white px-3 py-1 rounded">E-mail</button>
+        <button type="button" id="btnNext" class="bg-emerald-600 text-white px-3 py-1 rounded">Continuar</button>
       </div>
-
-      <!-- Formulário -->
-      <form id="diagForm" class="space-y-4">
-        <!-- progresso -->
-        <div class="grid grid-cols-4 gap-3">
-          <div id="p1" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Empresa</div>
-          <div id="p2" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Objetivos</div>
-          <div id="p3" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Canais & Desafios</div>
-          <div id="p4" class="step rounded-xl border border-slate-200 p-3 text-center text-sm">Envio</div>
-        </div>
-
-        <!-- CARD -->
-        <div class="rounded-2xl border border-slate-200 bg-white soft-shadow p-6">
-          <!-- step 1 -->
-          <div data-step="1" class="step-pane">
-            <h2 class="font-bold text-lg">1) Sobre a empresa</h2>
-            <div class="mt-4 grid md:grid-cols-2 gap-4">
-              <input name="empresa" required placeholder="Nome da empresa" class="px-4 py-3 rounded-xl border border-slate-300">
-              <input name="site" required placeholder="Site" class="px-4 py-3 rounded-xl border border-slate-300">
-              <select name="tamanho" required class="px-4 py-3 rounded-xl border border-slate-300">
-                <option value="" disabled selected>Tamanho do time</option>
-                <option>1-5</option><option>6-20</option><option>21-50</option><option>51-200</option><option>200+</option>
-              </select>
-              <select name="segmento" required class="px-4 py-3 rounded-xl border border-slate-300">
-                <option value="" disabled selected>Segmento</option>
-                <option>Serviços</option><option>Varejo</option><option>Indústria</option><option>Educação</option><option>Saúde</option><option>Outro</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- step 2 -->
-          <div data-step="2" class="step-pane hidden">
-            <h2 class="font-bold text-lg">2) Objetivos</h2>
-            <div class="mt-4 grid gap-4">
-              <textarea name="objetivos" required rows="3" placeholder="Quais resultados você busca? (ex.: mais leads, reduzir custos, melhorar atendimento)" class="px-4 py-3 rounded-xl border border-slate-300"></textarea>
-              <textarea name="processos" required rows="3" placeholder="Quais processos consomem tempo hoje? (ex.: propostas, cadastro, follow-up, conciliações...)" class="px-4 py-3 rounded-xl border border-slate-300"></textarea>
-              <select name="orcamento" required class="px-4 py-3 rounded-xl border border-slate-300">
-                <option value="" disabled selected>Faixa de orçamento mensal</option>
-                <option>Até R$ 3.000</option><option>R$ 3.000–8.000</option><option>R$ 8.000–20.000</option><option>R$ 20.000+</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- step 3 -->
-          <div data-step="3" class="step-pane hidden">
-            <h2 class="font-bold text-lg">3) Canais & Desafios</h2>
-            <div class="mt-4 grid gap-4">
-              <input name="canais" required placeholder="Canais e ferramentas atuais (CRM, ERP, WhatsApp, Instagram, RD, Pipe, etc.)" class="px-4 py-3 rounded-xl border border-slate-300">
-              <textarea name="desafios" required rows="3" placeholder="Principais gargalos (ex.: retrabalho, integrações quebradas, lentidão, falta de visibilidade)" class="px-4 py-3 rounded-xl border border-slate-300"></textarea>
-            </div>
-          </div>
-
-          <!-- step 4 (ENVIO) -->
-          <div data-step="4" class="step-pane hidden">
-            <h2 class="font-bold text-lg">4) Envio</h2>
-            <p class="mt-2 text-slate-600 text-sm">
-              Revise as informações e selecione a urgência antes de enviar para a EDIFIQ.
-            </p>
-
-            <!-- urgência -->
-            <div class="mt-4">
-              <label class="block text-sm font-medium text-slate-700 mb-1">Urgência</label>
-              <select name="urgencia" required class="w-full px-4 py-3 rounded-xl border border-slate-300">
-                <option value="" disabled selected>Selecione a urgência</option>
-                <option>Alta</option><option>Média</option><option>Baixa</option>
-              </select>
-            </div>
-
-            <!-- prévia -->
-            <pre id="preview" class="mt-4 w-full whitespace-pre-wrap rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm"></pre>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between">
-          <button type="button" id="btnPrev" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Voltar</button>
-          <div class="flex gap-2">
-            <!-- O WhatsApp e o Enviar por e-mail só aparecem na última etapa -->
-            <button type="button" id="btnWhats" class="hidden px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
-            <button type="submit" id="btnSubmit" class="hidden px-5 py-2 rounded-xl bg-black text-white hover:bg-red-700">Enviar por e-mail</button>
-            <button type="button" id="btnNext" class="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700">Continuar</button>
-          </div>
-        </div>
-
-        <p id="ok" class="hidden text-sm text-emerald-700">Recebemos seu diagnóstico. Entramos em contato em breve. ✅</p>
-      </form>
     </div>
-    <div class="w-full h-2 bar-split"></div>
-  </section>
+    <p id="ok" class="hidden text-emerald-700 mt-2">Enviado ✅</p>
+  </form>
+</section>
 
-  <!-- FOOTER simples -->
-  <footer class="py-10 border-t border-slate-200 bg-white">
-    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="./edifiq.jpg" alt="EDIFIQ" class="h-8 w-auto rounded"/>
-        <span class="text-sm text-slate-500">© <span id="year"></span> — EDIFIQ</span>
-      </div>
-      <a href="./index.html" class="text-sm text-slate-500 hover:text-emerald-700">Voltar</a>
-    </div>
-  </footer>
-
-  <script>
-    // ano
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // multi-step
-    let step = 1;
-    const total = 4;
-    const panes = [...document.querySelectorAll('.step-pane')];
-    const marks = [p1,p2,p3,p4];
-
-    function fmt(form){
-      const data = Object.fromEntries(new FormData(form).entries());
-      const linhas = [
-        `DIAGNÓSTICO EDIFIQ`,
-        ``,
-        `Empresa: ${data.empresa} | Site: ${data.site}`,
-        `Tamanho: ${data.tamanho} | Segmento: ${data.segmento}`,
-        ``,
-        `Objetivos: ${data.objetivos}`,
-        `Processos críticos: ${data.processos}`,
-        `Orçamento: ${data.orcamento}`,
-        ``,
-        `Canais: ${data.canais}`,
-        `Desafios: ${data.desafios}`,
-        ``,
-        `Urgência: ${data.urgencia || '(não selecionada)'}`
-      ];
-      return linhas.join('\n');
-    }
-
-    function updatePreview(){
-      const prev = document.getElementById('preview');
-      if(prev) prev.textContent = fmt(diagForm);
-    }
-
-    function render(){
-      panes.forEach(p=>p.classList.add('hidden'));
-      panes[step-1].classList.remove('hidden');
-      marks.forEach((m,i)=>m.classList.toggle('is-active', i===step-1));
-
-      document.getElementById('btnPrev').disabled = step===1;
-
-      // Mostrar/esconder botões conforme etapa
-      const last = (step===total);
-      document.getElementById('btnNext').classList.toggle('hidden', last);
-      document.getElementById('btnSubmit').classList.toggle('hidden', !last);
-      document.getElementById('btnWhats').classList.toggle('hidden', !last);
-
-      // Atualiza a prévia quando chega na etapa final
-      if(last) updatePreview();
-    }
-    render();
-
-    btnPrev.onclick = ()=>{ if(step>1){ step--; render(); } };
-
-    btnNext.onclick = ()=>{
-      // valida os campos visíveis antes de avançar
-      const pane = panes[step-1];
-      const invalid = pane.querySelector(':invalid');
-      if(invalid){ invalid.reportValidity(); return; }
-      if(step<total){ step++; render(); }
-    };
-
-    // Atualiza prévia sempre que qualquer campo mudar
-    diagForm.addEventListener('input', ()=>{
-      if(step===total) updatePreview();
-    });
-
-    // WhatsApp (apenas na última etapa)
-    btnWhats.onclick = ()=>{
-      // valida tudo (inclui urgência)
-      if(!diagForm.reportValidity()) return;
-
-      const txt = encodeURIComponent(fmt(diagForm));
-      const phone = '5553999038427'; // +55 53 99903-8427
-      const url = `https://wa.me/${phone}?text=${txt}`;
-      window.open(url, '_blank');
-    };
-
-    // Enviar por e-mail (mailto)
-    diagForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      // valida tudo (inclui urgência)
-      if(!diagForm.reportValidity()) return;
-
-      const assunto = encodeURIComponent('Diagnóstico EDIFIQ');
-      const corpo = encodeURIComponent(fmt(diagForm));
-      window.location.href = `mailto:edifiqcolab@gmail.com?subject=${assunto}&body=${corpo}`;
-      document.getElementById('ok').classList.remove('hidden');
-      // opcional: reset
-      // diagForm.reset(); step=1; render();
-    });
-  </script>
+<script>
+const WEBAPP_URL='SUA_URL_DO_WEBAPP'; // substitua
+const contact=JSON.parse(localStorage.getItem('edifiq_contact')||'{}');
+let step=1;const panes=[...document.querySelectorAll('.step-pane')];const marks=[p1,p2,p3,p4];
+function render(){panes.forEach((p,i)=>p.classList.toggle('hidden',i!==step-1));marks.forEach((m,i)=>m.classList.toggle('is-active',i===step-1));
+btnPrev.disabled=step===1;const last=step===4;btnNext.classList.toggle('hidden',last);btnSubmit.classList.toggle('hidden',!last);btnWhats.classList.toggle('hidden',!last);if(last)preview.textContent=fmt(diagForm);}
+function fmt(f){const d=Object.fromEntries(new FormData(f).entries());return`DIAGNÓSTICO\nEmpresa:${d.empresa}\nSite:${d.site}\nObjetivos:${d.objetivos}\nCanais:${d.canais}\nDesafios:${d.desafios}\nUrgência:${d.urgencia}`;}
+btnPrev.onclick=()=>{if(step>1){step--;render()}};btnNext.onclick=()=>{if(!diagForm.reportValidity())return;step++;render()};
+btnWhats.onclick=async()=>{if(!diagForm.reportValidity())return;await salvar('whatsapp');window.open(`https://wa.me/5553999038427?text=${encodeURIComponent(fmt(diagForm))}`,'_blank');}
+diagForm.onsubmit=async e=>{e.preventDefault();if(!diagForm.reportValidity())return;await salvar('email');document.getElementById('ok').classList.remove('hidden');window.location.href='mailto:edifiqcolab@gmail.com?subject=Diagnóstico&body='+encodeURIComponent(fmt(diagForm));}
+async function salvar(origem){const d=Object.fromEntries(new FormData(diagForm).entries());const payload={...d,...contact,origem,sendEmail:origem==='email',assunto:'Diagnóstico EDIFIQ',corpo:fmt(diagForm),para:'edifiqcolab@gmail.com'};try{await fetch(WEBAPP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});}catch(e){console.warn(e)}}
+render();
+</script>
 </body>
 </html>
-
-
-
