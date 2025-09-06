@@ -6,13 +6,12 @@
   <title>EDIFIQ — Estratégia, Execução e Performance</title>
   <meta name="description" content="Assessoria de crescimento: automações, integrações, sites e mobile focados em performance." />
 
-<!-- Favicons -->
-<link rel="icon" href="/favicon.ico" sizes="any">              <!-- opcional .ico -->
-<link rel="icon" type="image/png" href="/edifiq - Copia.jpg" sizes="32x32">
-<link rel="icon" type="image/png" href="/edifiq - Copia.jpg" sizes="16x16">
-<link rel="apple-touch-icon" href="/edifiq - Copia.jpg">               <!-- iOS -->
-<meta name="theme-color" content="#000000">
-
+  <!-- Favicons (mantidos como você enviou) -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/edifiq - Copia.jpg" sizes="32x32">
+  <link rel="icon" type="image/png" href="/edifiq - Copia.jpg" sizes="16x16">
+  <link rel="apple-touch-icon" href="/edifiq - Copia.jpg">
+  <meta name="theme-color" content="#000000">
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -40,7 +39,6 @@
         <a href="#calculadora" class="hover:text-emerald-700">Estimativa</a>
         <a href="#servicos" class="hover:text-emerald-700">Serviços</a>
         <a href="#faq" class="hover:text-emerald-700">Dúvidas</a>
-        <!-- Botão Diagnóstico: AGORA ABRE POPUP -->
         <a href="diagnostico.html" data-dx class="ml-2 inline-flex items-center gap-2 rounded-xl bg-black text-white px-4 py-2 soft-shadow hover:bg-red-700 transition">
           Diagnóstico
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -64,7 +62,6 @@
           <strong>Crescimento e inovação</strong> com automações, integrações e <strong>produtos web</strong> que geram resultado.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
-          <!-- “Começar agora”: AGORA ABRE POPUP -->
           <a href="diagnostico.html" data-dx class="inline-flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">
             Começar agora
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -73,8 +70,8 @@
             Como funciona
           </a>
         </div>
-        <!-- Contadores: 1 coluna no mobile, 3 no desktop -->
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+        <!-- Contadores: agora 3 colunas também no mobile -->
+        <div class="mt-8 grid grid-cols-3 gap-4 text-center">
           <div>
             <div class="text-2xl md:text-3xl font-extrabold" data-counter="100" data-plus="true">+0</div>
             <p class="text-xs text-slate-500">projetos</p>
@@ -90,11 +87,9 @@
         </div>
       </div>
 
-      <!-- Logo: oculta no mobile, mostra no md+ -->
-      <div class="grid place-items-center">
-  <img src="./edifiq.png" alt="EDIFIQ" class="w-72 lg:w-80 h-auto object-contain" />
-</div>
-
+      <!-- Logo grande: escondido no mobile -->
+      <div class="hidden md:grid place-items-center">
+        <img src="./edifiq.png" alt="EDIFIQ" class="w-72 lg:w-80 h-auto object-contain" />
       </div>
     </div>
     <div class="w-full h-2 bar-split"></div>
@@ -132,7 +127,6 @@
     <div class="max-w-6xl mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-center">Como funciona</h2>
 
-      <!-- 1 coluna no mobile, 4 no desktop -->
       <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
         <div class="p-6 rounded-2xl border border-slate-200 bg-white text-center">
           <span class="text-sm md:text-base font-bold text-emerald-700 block">1. Diagnóstico</span>
@@ -199,7 +193,6 @@
         <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
           <h3 class="font-semibold text-lg">Resultados estimados</h3>
 
-          <!-- 1 coluna no mobile, 2 no desktop -->
           <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
               <p class="text-xs text-slate-500">Custo-hora médio</p>
@@ -301,7 +294,6 @@
       <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 md:p-12 text-center soft-shadow">
         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Vamos acelerar seu projeto?</h2>
         <p class="mt-3 text-slate-600">Solicite um diagnóstico gratuito e receba um plano inicial.</p>
-        <!-- FORM: agora com WHATSAPP também -->
         <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto" novalidate>
           <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
@@ -324,7 +316,8 @@
           <p class="text-xs text-slate-500">© <span id="year"></span> — Todos os direitos reservados</p>
         </div>
       </div>
-      <div class="text-sm text-slate-500 text-center md:text-left">
+      <!-- Menu do rodapé escondido no mobile -->
+      <div class="hidden md:block text-sm text-slate-500 text-center md:text-left">
         <a href="#beneficios" class="hover:text-emerald-700">Por que EDIFIQ</a> ·
         <a href="#etapas" class="hover:text-emerald-700">Como funciona</a> ·
         <a href="#servicos" class="hover:text-emerald-700">Serviços</a> ·
@@ -335,7 +328,7 @@
     <div class="w-full h-2 mt-6 bar-split"></div>
   </footer>
 
-  <!-- MODAL (popup para links de diagnóstico no nav/hero) -->
+  <!-- MODAL -->
   <div id="dxModal" class="fixed inset-0 hidden items-center justify-center p-4">
     <div class="absolute inset-0 modal-backdrop"></div>
     <div class="relative w-full max-w-md rounded-2xl bg-white p-6 soft-shadow border border-slate-200">
@@ -378,7 +371,6 @@
 
     // Calculadora
     const BRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
-    const $ = id => document.getElementById(id);
     function calc(){
       const func = +document.getElementById('inp-func').value||0;
       const sal  = +document.getElementById('inp-sal').value||0;
@@ -411,10 +403,8 @@
     window.addEventListener('DOMContentLoaded', calc);
 
     // ========= CONFIG / HELPERS =========
-    // Endpoint Formspree (seu ID)
     const FORMSPREE_URL = 'https://formspree.io/f/mrbargeq';
     const KEY_LOCAL = 'edifiq_leads';
-
     const normPhone = v => (v||'').replace(/\D+/g,'');
 
     function saveLocal(row){
@@ -517,7 +507,6 @@
     document.getElementById('dxClose')?.addEventListener('click', closeDx);
     dxModal.addEventListener('click', (e)=>{ if(e.target===dxModal) closeDx(); });
 
-    // Todos os links para diagnostico.html marcados com data-dx abrem o modal
     document.querySelectorAll('[data-dx]').forEach(el=>{
       el.addEventListener('click', (e)=>{
         e.preventDefault();
@@ -561,7 +550,3 @@
   </script>
 </body>
 </html>
-
-
-
-
