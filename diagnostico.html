@@ -123,13 +123,14 @@
         <div class="flex items-center justify-between">
           <button type="button" id="btnPrev" class="px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Voltar</button>
           <div class="flex gap-2">
-            <!-- Apenas WhatsApp na etapa final -->
+            <!-- Apenas WhatsApp na etapa final (mas antes envia pro Formspree) -->
             <button type="button" id="btnWhats" class="hidden px-4 py-2 rounded-xl border border-emerald-600 text-emerald-700 hover:bg-emerald-50">Enviar por WhatsApp</button>
             <button type="button" id="btnNext" class="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700">Continuar</button>
           </div>
         </div>
 
-        <p id="ok" class="hidden text-sm text-emerald-700">Resumo pronto! Abrimos seu WhatsApp com as informações. ✅</p>
+        <p id="ok" class="hidden text-sm text-emerald-700">Dados enviados. Abrimos seu WhatsApp com o resumo. ✅</p>
+        <p id="erro" class="hidden text-sm text-red-700">Não foi possível enviar online agora. Salvamos localmente e baixamos um CSV com o diagnóstico.</p>
       </form>
     </div>
     <div class="w-full h-2 bar-split"></div>
@@ -147,15 +148,36 @@
   </footer>
 
   <script>
-    // ano
+    // ========= ANO =========
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // multi-step
+    // ========= STEPS =========
     let step = 1;
     const total = 4;
     const panes = [...document.querySelectorAll('.step-pane')];
     const marks = [p1,p2,p3,p4];
 
+    function render(){
+      panes.forEach(p=>p.classList.add('hidden'));
+      panes[step-1].classList.remove('hidden');
+      marks.forEach((m,i)=>m.classList.toggle('is-active', i===step-1));
+      btnPrev.disabled = step===1;
+      const last = step===total;
+      btnNext.classList.toggle('hidden', last);
+      btnWhats.classList.toggle('hidden', !last);
+      if(last) updatePreview();
+    }
+    render();
+
+    btnPrev.onclick = ()=>{ if(step>1){ step--; render(); } };
+    btnNext.onclick = ()=>{
+      const pane = panes[step-1];
+      const invalid = pane.querySelector(':invalid');
+      if(invalid){ invalid.reportValidity(); return; }
+      if(step<total){ step++; render(); }
+    };
+
+    // ========= FORMAT/RESUMO =========
     function fmt(form){
       const d = Object.fromEntries(new FormData(form).entries());
       const linhas = [
@@ -178,48 +200,112 @@
       return linhas.join('\n');
     }
 
+    function collect(form){
+      const d = Object.fromEntries(new FormData(form).entries());
+      return {
+        empresa:  d.empresa || '',
+        site:     d.site || '',
+        tamanho:  d.tamanho || '',
+        segmento: d.segmento || '',
+        objetivos: d.objetivos || '',
+        processos: d.processos || '',
+        orcamento: d.orcamento || '',
+        canais:    d.canais || '',
+        desafios:  d.desafios || '',
+        urgencia:  d.urgencia || '',
+        origem:   'diagnostico',
+        resumo:   fmt(form)
+      };
+    }
+
     function updatePreview(){
       const prev = document.getElementById('preview');
       if(prev) prev.textContent = fmt(diagForm);
     }
 
-    function render(){
-      panes.forEach(p=>p.classList.add('hidden'));
-      panes[step-1].classList.remove('hidden');
-      marks.forEach((m,i)=>m.classList.toggle('is-active', i===step-1));
+    diagForm.addEventListener('input', ()=>{ if(step===total) updatePreview(); });
 
-      document.getElementById('btnPrev').disabled = step===1;
+    // ========= FORMSPREE + FALLBACK =========
+    const FORMSPREE_URL = 'https://formspree.io/f/mrbargeq';
+    const KEY_LOCAL = 'edifiq_diag';
 
-      const last = (step===total);
-      document.getElementById('btnNext').classList.toggle('hidden', last);
-      document.getElementById('btnWhats').classList.toggle('hidden', !last);
-
-      if(last) updatePreview();
+    function saveLocal(row){
+      try{
+        const prev = JSON.parse(localStorage.getItem(KEY_LOCAL) || '[]');
+        prev.push({ ts: Date.now(), ...row });
+        localStorage.setItem(KEY_LOCAL, JSON.stringify(prev));
+      }catch(_){}
     }
-    render();
 
-    btnPrev.onclick = ()=>{ if(step>1){ step--; render(); } };
-    btnNext.onclick = ()=>{
-      // valida os campos visíveis antes de avançar
-      const pane = panes[step-1];
-      const invalid = pane.querySelector(':invalid');
-      if(invalid){ invalid.reportValidity(); return; }
-      if(step<total){ step++; render(); }
-    };
+    function downloadCSV(row){
+      const headers = [
+        'timestamp','empresa','site','tamanho','segmento',
+        'objetivos','processos','orcamento','canais','desafios','urgencia','origem'
+      ];
+      const values = [
+        new Date().toISOString(),
+        row.empresa,row.site,row.tamanho,row.segmento,
+        row.objetivos,row.processos,row.orcamento,row.canais,row.desafios,row.urgencia,row.origem
+      ];
+      const csv = headers.join(',') + '\n' + values.map(v => `"${String(v||'').replace(/"/g,'""')}"`).join(',');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = 'diagnostico-edifiq.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
 
-    // Atualiza prévia em tempo real quando estiver no passo final
-    diagForm.addEventListener('input', ()=>{
-      if(step===total) updatePreview();
-    });
+    async function sendOnline(data){
+      try{
+        const fd = new FormData();
+        fd.append('_subject','Novo diagnóstico');
+        fd.append('_captcha','false');
+        // campos individuais
+        fd.append('empresa',  data.empresa);
+        fd.append('site',     data.site);
+        fd.append('tamanho',  data.tamanho);
+        fd.append('segmento', data.segmento);
+        fd.append('objetivos',data.objetivos);
+        fd.append('processos',data.processos);
+        fd.append('orcamento',data.orcamento);
+        fd.append('canais',   data.canais);
+        fd.append('desafios', data.desafios);
+        fd.append('urgencia', data.urgencia);
+        fd.append('origem',   data.origem);
+        // resumo completo pra facilitar a leitura no e-mail
+        fd.append('resumo',   data.resumo);
 
-    // WhatsApp (somente no final)
-    btnWhats.onclick = ()=>{
+        const r = await fetch(FORMSPREE_URL, { method:'POST', body: fd, headers:{ 'Accept':'application/json' } });
+        return r.ok;
+      }catch(_){ return false; }
+    }
+
+    // ========= WHATSAPP (envia primeiro ao Formspree) =========
+    btnWhats.onclick = async ()=>{
+      // valida tudo
       if(!diagForm.reportValidity()) return;
-      const txt = encodeURIComponent(fmt(diagForm));
-      const phone = '5553999038427'; // seu número
+
+      const payload = collect(diagForm);
+      // tenta enviar online
+      const ok = await sendOnline(payload);
+      if(!ok){
+        // fallback local
+        saveLocal(payload);
+        downloadCSV(payload);
+        document.getElementById('erro').classList.remove('hidden');
+      }else{
+        document.getElementById('ok').classList.remove('hidden');
+      }
+
+      // abrir WhatsApp com o resumo
+      const txt = encodeURIComponent(payload.resumo);
+      const phone = '5553999038427'; // seu número em formato internacional sem +
       const url = `https://wa.me/${phone}?text=${txt}`;
       window.open(url, '_blank');
-      document.getElementById('ok').classList.remove('hidden');
     };
   </script>
 </body>
