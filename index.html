@@ -239,28 +239,28 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2h6v2a2 2 0 002 2h1a2 2 0 002-2V7a2 2 0 00-2-2h-1a2 2 0 00-2 2v2H9V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h1a2 2 0 002-2z"/>
           </svg>
-          <h3 class="font-semibold text-lg">Automações</h3>
+          <h3 class="font-semibold text-lg text-center">Automações</h3>
         </div>
 
         <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
           <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 16h10M5 12h14M12 20h.01M12 4h.01"/>
           </svg>
-          <h3 class="font-semibold text-lg">Integrações</h3>
+          <h3 class="font-semibold text-lg text-center">Integrações</h3>
         </div>
 
         <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
           <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
           </svg>
-          <h3 class="font-semibold text-lg">Mobile</h3>
+          <h3 class="font-semibold text-lg text-center">Mobile</h3>
         </div>
 
         <div class="p-6 rounded-2xl border border-slate-200 bg-white soft-shadow">
           <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 h-12 w-12 text-emerald-700" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
           </svg>
-          <h3 class="font-semibold text-lg">Sites</h3>
+          <h3 class="font-semibold text-lg text-center">Sites</h3>
         </div>
       </div>
     </div>
@@ -297,12 +297,13 @@
       <div class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 md:p-12 text-center soft-shadow">
         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Vamos acelerar seu projeto?</h2>
         <p class="mt-3 text-slate-600">Solicite um diagnóstico gratuito e receba um plano inicial.</p>
-        <!-- FORM: salva lead e redireciona para diagnostico.html -->
-        <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto">
+        <!-- FORM: salva lead centralizado e redireciona para diagnostico.html -->
+        <form id="leadForm" class="mt-6 grid md:grid-cols-3 gap-3 max-w-3xl mx-auto" novalidate>
           <input required name="nome" type="text" placeholder="Seu nome" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <input required name="email" type="email" placeholder="Seu e-mail" class="px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <button class="rounded-xl bg-black text-white px-5 py-3 soft-shadow hover:bg-red-700 transition">Diagnóstico</button>
         </form>
+        <p id="leadOk" class="hidden mt-3 text-sm text-emerald-700">Dados salvos. Redirecionando…</p>
       </div>
     </div>
   </section>
@@ -385,32 +386,85 @@
     });
     window.addEventListener('DOMContentLoaded', calc);
 
-    // ========= LEAD: salvar no localStorage e redirecionar =========
+    // ========= LEAD: salvar no Google Sheets (centralizado) e backup local =========
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyz9CfIDxS_BBpxcOc8wLvloPIixV4Thyz7O3o5l-xjC0tZb6fz6EzqD3Vf6qt19w1W3g/exec';
+
+    // Captura parâmetros de campanha (utm_source etc.) para enriquecer a origem
+    function getUTM(){
+      const p = new URLSearchParams(location.search);
+      const utms = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content']
+        .map(k => p.get(k) ? `${k}=${p.get(k)}` : '')
+        .filter(Boolean)
+        .join('&');
+      return utms || '';
+    }
+
+    async function salvarNoSheets(payload){
+      try{
+        // usar text/plain para evitar preflight/CORS
+        await fetch(WEBAPP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload),
+        });
+      }catch(e){
+        console.warn('Falha ao salvar no Sheets:', e);
+      }
+    }
+
+    // backup local (opcional)
     const LEADS_KEY = 'edifiq_leads';
-    function salvarLead(payload){
+    function salvarLeadLocal(payload){
       try{
         const arr = JSON.parse(localStorage.getItem(LEADS_KEY) || '[]');
-        arr.push({ ...payload, ts: Date.now(), origem: 'index' });
+        arr.push({ ...payload, ts: Date.now(), origem: payload.origem || 'index' });
         localStorage.setItem(LEADS_KEY, JSON.stringify(arr));
       }catch(_){}
     }
 
     const leadForm = document.getElementById('leadForm');
-    leadForm?.addEventListener('submit', (e)=>{
+    leadForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
+
+      // validação simples
       const btn = leadForm.querySelector('button');
-      btn.disabled = true; btn.textContent = 'Enviando...';
+      const nome  = (leadForm.nome.value || '').trim();
+      const email = (leadForm.email.value || '').trim();
+      if(!nome || !email){ return; }
+
+      btn.disabled = true; btn.textContent = 'Salvando…';
+
+      // monta payload
+      const origemBase = 'index';
+      const utm = getUTM();
+      const origem = utm ? `${origemBase}?${utm}` : origemBase;
 
       const payload = {
-        nome:  leadForm.nome.value.trim(),
-        email: leadForm.email.value.trim()
+        // os campos abaixo devem existir na planilha (headers) ou serão ignorados
+        empresa:  '',         // opcional no index
+        site:     '',         // opcional no index
+        tamanho:  '',         // opcional no index
+        segmento: '',         // opcional no index
+        objetivos:'',         // opcional no index
+        processos:'',         // opcional no index
+        orcamento:'',         // opcional no index
+        canais:   '',         // opcional no index
+        desafios: '',         // opcional no index
+        urgencia: '',         // opcional no index
+        origem,               // "index" + utms se houver
+        // Extras que não vão para colunas (mas ficam no backup local):
+        nome, email
       };
-      if (!payload.nome || !payload.email){
-        btn.disabled = false; btn.textContent = 'Diagnóstico';
-        return;
-      }
 
-      salvarLead(payload);
+      // salva centralizado (espera até 1.2s no máximo para não travar UX)
+      const timeout = new Promise(res => setTimeout(res, 1200));
+      await Promise.race([salvarNoSheets(payload), timeout]);
+
+      // backup local
+      salvarLeadLocal({ ...payload, nome, email });
+
+      // mensagem e redireciona
+      document.getElementById('leadOk').classList.remove('hidden');
       window.location.href = 'diagnostico.html';
     });
   </script>
